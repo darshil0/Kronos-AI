@@ -2,25 +2,33 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { UserFeedbackForm } from '../components/UserFeedbackForm';
-import { supabase } from '../lib/supabaseClient';
-import { mockInsert, mockGetUser } from './mocks/supabase';
+
+const { mockInsert, mockFrom, mockGetUser } = vi.hoisted(() => ({
+  mockInsert: vi.fn().mockResolvedValue({ error: null }),
+  mockFrom: vi.fn().mockReturnThis(),
+  mockGetUser: vi.fn().mockResolvedValue({ data: { user: null }, error: null }),
+}));
+
+// mockReturnThis() will make mockFrom return the object that has insert, but we need to be careful.
+// Let's refine it.
 
 vi.mock('../lib/supabaseClient', () => ({
   supabase: {
     auth: {
-      getUser: vi.fn(),
+      getUser: mockGetUser,
     },
-    from: vi.fn(() => ({
-      insert: vi.fn(),
-    })),
+    from: mockFrom.mockReturnValue({
+      insert: mockInsert,
+    }),
   },
 }));
 
 describe('UserFeedbackForm', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (supabase.auth.getUser as any).mockResolvedValue({ data: { user: null }, error: null });
-    (supabase.from as any)().insert.mockResolvedValue({ error: null });
+    mockGetUser.mockResolvedValue({ data: { user: null }, error: null });
+    mockInsert.mockResolvedValue({ error: null });
+    mockFrom.mockReturnValue({ insert: mockInsert });
   });
 
   it('renders correctly when user is not logged in', async () => {
@@ -30,7 +38,7 @@ describe('UserFeedbackForm', () => {
   });
 
   it('pre-fills email when user is logged in', async () => {
-    (supabase.auth.getUser as any).mockResolvedValue({
+    mockGetUser.mockResolvedValue({
       data: { user: { email: 'operator@kronos.ai' } },
       error: null,
     });
@@ -49,13 +57,11 @@ describe('UserFeedbackForm', () => {
     
     fireEvent.click(submitButton);
     
-    // HTML5 native validation might stop it, or our internal check
-    // Our internal check for valid email happens first
     expect(await screen.findByText(/Please enter a valid email address/i)).toBeInTheDocument();
   });
 
   it('calls supabase.from().insert() with correct payload on valid submit', async () => {
-    (supabase.auth.getUser as any).mockResolvedValue({
+    mockGetUser.mockResolvedValue({
       data: { user: { email: 'admin@kronos.ai' } },
       error: null,
     });
@@ -70,8 +76,8 @@ describe('UserFeedbackForm', () => {
     fireEvent.click(screen.getByRole('button', { name: /Submit/i }));
 
     await waitFor(() => {
-      expect(supabase.from).toHaveBeenCalledWith('feedback');
-      expect((supabase.from as any)().insert).toHaveBeenCalledWith([{
+      expect(mockFrom).toHaveBeenCalledWith('feedback');
+      expect(mockInsert).toHaveBeenCalledWith([{
         email: 'admin@kronos.ai',
         subject: 'Bug',
         message: 'Fix this'
@@ -92,7 +98,7 @@ describe('UserFeedbackForm', () => {
   });
 
   it('shows error message when Supabase returns an error', async () => {
-    (supabase.from as any)().insert.mockResolvedValue({ error: { message: 'Database failure' } });
+    mockInsert.mockResolvedValue({ error: { message: 'Database failure' } });
     
     render(<UserFeedbackForm />);
     
@@ -107,7 +113,7 @@ describe('UserFeedbackForm', () => {
 
   it('disables submit button while loading', async () => {
     // Delayed mock
-    (supabase.from as any)().insert.mockImplementation(() => new Promise(resolve => setTimeout(() => resolve({ error: null }), 100)));
+    mockInsert.mockImplementation(() => new Promise(resolve => setTimeout(() => resolve({ error: null }), 100)));
     
     render(<UserFeedbackForm />);
     
