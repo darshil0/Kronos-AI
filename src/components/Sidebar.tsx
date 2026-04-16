@@ -18,7 +18,12 @@ const personas = [
   { name: 'Side Project', color: 'bg-[#f59e0b]' },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  currentView: string;
+  onViewChange: (view: string) => void;
+}
+
+export function Sidebar({ currentView, onViewChange }: SidebarProps) {
   return (
     <div className="flex h-full w-[240px] flex-col glass-dark border-r border-white/10 text-white bg-zinc-900/30">
       <div className="flex h-16 shrink-0 items-center px-6 gap-2">
@@ -34,9 +39,10 @@ export function Sidebar() {
                 <Button
                   key={item.name}
                   variant="ghost"
+                  onClick={() => onViewChange(item.name === 'Today' ? 'Calendar' : item.name)}
                   className={cn(
                     "w-full justify-start gap-3 text-white hover:bg-white/10",
-                    item.current && "bg-white/10"
+                    (currentView === item.name || (item.name === 'Today' && currentView === 'Calendar')) && "bg-white/10"
                   )}
                 >
                   <item.icon className="h-4 w-4" />
@@ -73,7 +79,14 @@ export function Sidebar() {
           <Shield className="h-4 w-4" />
           SHIELD MODE
         </Button>
-        <Button variant="ghost" className="w-full justify-start gap-3 text-white/60 hover:text-white hover:bg-white/10">
+        <Button 
+          variant="ghost" 
+          onClick={() => onViewChange('Settings')}
+          className={cn(
+            "w-full justify-start gap-3 text-white/60 hover:text-white hover:bg-white/10",
+            currentView === 'Settings' && "text-white bg-white/10"
+          )}
+        >
           <Settings className="h-4 w-4" />
           Settings
         </Button>

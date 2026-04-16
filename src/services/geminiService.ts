@@ -8,7 +8,7 @@ export async function parseSchedulingPrompt(prompt: string) {
     model: "gemini-3.1-pro-preview",
     contents: prompt,
     config: {
-      systemInstruction: "You are the Ultimate AI Calendar assistant. Parse natural language scheduling requests. Return a JSON object with title, start_time, duration_minutes, priority (1-10), type (meeting, task, deep_work, admin, travel), and persona (work, family, side). Use ISO 8601 for dates.",
+      systemInstruction: "You are the Ultimate AI Calendar assistant. Parse natural language scheduling requests. Return a JSON object with title, start_time, duration_minutes, priority (1-10), type (meeting, task, deep_work, admin, travel), persona (work, family, side), and energy_score (1-10 based on how demanding the task is). Use ISO 8601 for dates.",
       responseMimeType: "application/json",
       responseSchema: {
         type: Type.OBJECT,
@@ -19,9 +19,10 @@ export async function parseSchedulingPrompt(prompt: string) {
           priority: { type: Type.NUMBER },
           type: { type: Type.STRING },
           persona: { type: Type.STRING },
+          energy_score: { type: Type.NUMBER },
           action_items: { type: Type.ARRAY, items: { type: Type.STRING } },
         },
-        required: ["title", "start_time", "duration_minutes", "priority", "type", "persona"],
+        required: ["title", "start_time", "duration_minutes", "priority", "type", "persona", "energy_score"],
       },
     },
   });

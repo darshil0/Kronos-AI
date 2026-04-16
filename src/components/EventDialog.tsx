@@ -99,6 +99,8 @@ export function EventDialog({ event, isOpen, onClose, defaultDate }: EventDialog
     }
   };
 
+  const isInvalid = formData.start_time && formData.end_time && new Date(formData.end_time) <= new Date(formData.start_time);
+
   const handleDelete = async () => {
     if (!confirm('Are you sure you want to terminate this event?')) return;
     
@@ -158,6 +160,13 @@ export function EventDialog({ event, isOpen, onClose, defaultDate }: EventDialog
               />
             </div>
           </div>
+
+          {isInvalid && (
+            <div className="bg-red-500/10 border border-red-500/20 rounded-md p-3 flex items-center gap-3 text-red-400 text-xs font-mono animate-in fade-in slide-in-from-top-1">
+              <span className="shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-red-500/20 font-bold">!</span>
+              Temporal Paradox Detected: End time must occur after start time.
+            </div>
+          )}
 
           <div className="grid grid-cols-3 gap-4">
              <div className="space-y-2">
@@ -234,8 +243,11 @@ export function EventDialog({ event, isOpen, onClose, defaultDate }: EventDialog
             </Button>
             <Button 
               onClick={handleSave}
-              disabled={isSaving}
-              className="bg-blue-600 hover:bg-blue-500 text-white gap-2 font-mono text-xs uppercase tracking-widest px-6"
+              disabled={isSaving || isInvalid || !formData.title}
+              className={cn(
+                "bg-blue-600 hover:bg-blue-500 text-white gap-2 font-mono text-xs uppercase tracking-widest px-6",
+                isInvalid && "opacity-50 grayscale cursor-not-allowed"
+              )}
             >
               {isSaving ? 'Synchronizing...' : (event ? 'Update Parameters' : 'Authorize Mission')}
               {event ? <Save className="h-4 w-4" /> : <Plus className="h-4 w-4" />}

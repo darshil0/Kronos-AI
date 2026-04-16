@@ -36,7 +36,7 @@ export function CommandCenter() {
         priority: parsed.priority || 5,
         type: parsed.type || 'meeting',
         status: 'confirmed',
-        energy_score: 7, // Default for now
+        energy_score: parsed.energy_score || 5,
         action_items: parsed.action_items || []
       });
 

@@ -7,7 +7,7 @@ import { CalendarEvent } from '../types';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
 import { cn } from '../lib/utils';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, addMonths, subMonths } from 'date-fns';
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, addMonths, subMonths, isToday } from 'date-fns';
 import { EventDialog } from './EventDialog';
 
 export function CalendarGrid() {
@@ -104,10 +104,17 @@ export function CalendarGrid() {
                   setDefaultDate(day);
                   setIsDialogOpen(true);
                 }}
-                className="border-r border-b border-white/10 p-2 hover:bg-white/5 transition-colors group cursor-pointer min-h-[120px]"
+                className={cn(
+                  "border-r border-b border-white/10 p-2 hover:bg-white/5 transition-colors group cursor-pointer min-h-[120px]",
+                  isToday(day) && "bg-blue-500/5 ring-1 ring-inset ring-blue-500/20"
+                )}
               >
-                <span className="text-xs text-white/30 group-hover:text-white/80 transition-colors font-mono">
+                <span className={cn(
+                  "text-xs font-mono transition-colors",
+                  isToday(day) ? "text-blue-400 font-bold" : "text-white/30 group-hover:text-white/80"
+                )}>
                   {format(day, 'd')}
+                  {isToday(day) && <span className="ml-1 text-[8px] uppercase tracking-tighter opacity-70">Today</span>}
                 </span>
                 <div className="mt-2 space-y-1">
                   {dayEvents.map(event => (
