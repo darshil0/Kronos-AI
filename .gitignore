@@ -6,3 +6,9 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Firebase config with real secrets
+firebase-applet-config.local.json
+
+# Supabase config with real secrets (if created)
+supabase-config.local.json
