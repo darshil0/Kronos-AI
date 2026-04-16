@@ -34,7 +34,7 @@ describe('Feedback Utilities', () => {
       
       expect(prompt).toContain('Subject: Bug Report');
       expect(prompt).toContain('Message: Calendar is lagging.');
-      expect(prompt).toContain('analyze and categorize');
+      expect(prompt).toContain('analysis and categorize');
     });
   });
 });

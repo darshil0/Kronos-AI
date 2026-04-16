@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button } from '@/components/ui/button';
 
 interface ErrorBoundaryProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 interface ErrorBoundaryState {

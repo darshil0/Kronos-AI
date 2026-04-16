@@ -2,13 +2,18 @@
 
 All notable changes to the KRONOS AI project will be documented in this file.
 
-## [1.2.1] - 2026-04-16
+## [1.3.0] - 2026-04-16
+
+### Added
+- **Security Sanitization Layer**: Refactored `firebase.ts` to support environment variables and local secret files.
+- **Developer Onboarding**: Added `setup-dev.sh` script to securely initialize local development credentials.
+- **Security Documentation**: Created `SECURITY_FIX.md` with credential rotation protocols and audit summary.
 
 ### Fixed
-- **ErrorBoundary**: Resolved TypeScript `this.props` and `this.state` access errors by installing `@types/react` and refining component structure.
-- **UserFeedbackForm**: Corrected data destructuring from Supabase response to prevent `undefined` errors.
-- **Form Validation**: Added `noValidate` to `UserFeedbackForm` to ensure consistent custom validation behavior across environments.
-- **Tests**: Fixed button label regex and utility test assertions to match implementation.
+- **Credential Leak**: Sanitized `firebase-applet-config.json` and moved real secrets to git-ignored `.local.json`.
+- **TypeScript Stability**: Resolved persistent `TS2339` errors in `ErrorBoundary.tsx` using robust class property patterns.
+- **Environment Parity**: Updated `.gitignore` to strictly exclude all environment and local config files.
+- **Documentation**: Synchronized `README.md` with new security protocols.
 
 ## [1.2.0] - 2026-04-16
 

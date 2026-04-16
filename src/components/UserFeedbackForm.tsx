@@ -53,15 +53,13 @@ export function UserFeedbackForm() {
     }
 
     try {
-      const response = await supabase
+      const { error: dbError } = await supabase
         .from('feedback')
         .insert([{
           email: formData.email,
           subject: sanitizeInput(formData.subject),
           message: sanitizeInput(formData.message),
         }]);
-
-      const dbError = response?.error;
 
       if (dbError) throw dbError;
 
@@ -96,7 +94,7 @@ export function UserFeedbackForm() {
       <CardHeader>
         <CardTitle className="text-white">Transmit Feedback</CardTitle>
       </CardHeader>
-      <form onSubmit={handleSubmit} noValidate>
+      <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email" className="text-white/60">Email</Label>
@@ -132,7 +130,7 @@ export function UserFeedbackForm() {
               required
             />
           </div>
-          {error && <p role="alert" className="text-red-400 text-sm font-mono">{error}</p>}
+          {error && <p className="text-red-400 text-sm font-mono">{error}</p>}
         </CardContent>
         <CardFooter>
           <Button 
