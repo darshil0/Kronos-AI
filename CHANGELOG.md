@@ -2,6 +2,12 @@
 
 All notable changes to the KRONOS AI project will be documented in this file.
 
+## [1.5.0] - 2026-04-16
+
+### Changed
+- **Project Structure Reorganization**: Consolidated all source code under the `src/` directory. Moved UI components to `src/components/ui`, application utilities to `src/lib`, and context providers to `src/context`. 
+- **Internal Reference Audit**: Updated all cross-module import paths across the entire application to align with the new consolidated architecture.
+
 ## [1.4.1] - 2026-04-16
 
 ### Removed
