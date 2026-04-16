@@ -1,7 +1,40 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
-import firebaseConfig from '../firebase-applet-config.json';
+
+// Load default config (holders)
+import baseConfig from '../firebase-applet-config.json';
+
+// Define the shape of our config
+interface FirebaseConfig {
+  apiKey: string;
+  authDomain: string;
+  projectId: string;
+  storageBucket?: string;
+  messagingSenderId?: string;
+  appId: string;
+  measurementId?: string;
+  firestoreDatabaseId: string;
+}
+
+// Function to resolve config with hierarchy:
+// 1. Environment Variables (VITE_*)
+// 2. Local Config (if we could import it dynamically, but Vite is static)
+// 3. Base Config
+const resolveConfig = (): FirebaseConfig => {
+  return {
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY || baseConfig.apiKey,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || baseConfig.authDomain,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || baseConfig.projectId,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || baseConfig.storageBucket,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || baseConfig.messagingSenderId,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID || baseConfig.appId,
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || baseConfig.measurementId,
+    firestoreDatabaseId: import.meta.env.VITE_FIREBASE_FIRESTORE_DATABASE_ID || baseConfig.firestoreDatabaseId,
+  };
+};
+
+const firebaseConfig = resolveConfig();
 
 // Initialize Firebase SDK
 const app = initializeApp(firebaseConfig);
