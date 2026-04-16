@@ -1,6 +1,6 @@
 # KRONOS AI: Ultimate Tactical Calendar
 
-KRONOS AI is a high-performance, AI-driven calendar application designed for autonomous scheduling and tactical time management. It leverages the power of Gemini AI to parse natural language commands and Supabase for secure, real-time data persistence.
+KRONOS AI is a high-performance, AI-driven calendar application designed for autonomous scheduling and tactical time management. It leverages the power of Gemini AI to parse natural language commands and Firebase for secure, real-time data persistence.
 
 ## 🚀 Features
 
@@ -8,16 +8,15 @@ KRONOS AI is a high-performance, AI-driven calendar application designed for aut
 - **Multi-Persona Alignment**: Categorize your life into Work, Family, and Side Projects with distinct visual markers.
 - **AI Insights Engine**: Receive real-time energy peak analysis and gaps suggestions to maintain peak tactical momentum.
 - **Tactical Calendar Grid**: A high-contrast, interactive grid with full CRUD (Create, Read, Update, Delete) capabilities via the Event Intel Dialog.
-- **User Feedback Loop**: Integrated feedback system for continuous operational improvement.
 - **Professional Polish Design**: A sleek, dark-mode "God Mode" interface with glassmorphism and tactical accents.
 
 ## 🛠 Tech Stack
 
 - **Frontend**: React 18, TypeScript, Vite
 - **Styling**: Tailwind CSS, Shadcn UI, Framer Motion
-- **Backend/Database**: Supabase (Auth, Postgres, RLS)
+- **Backend/Database**: Firebase (Auth, Firestore)
 - **Intelligence**: Google Gemini API
-- **Testing & Quality Control**: Vitest, ESLint, Prettier
+- **Testing & Quality Control**: ESLint, Prettier
 - **Icons/UI**: Lucide React, Sonner (Toasts), Date-fns
 
 ## 🏁 Getting Started
@@ -28,19 +27,15 @@ We recently performed a security audit and sanitized sensitive credentials. Plea
 ### Prerequisites
 
 - Node.js (v18+)
-- Supabase Account
-- Google AI Studio API Key
-
-### Configuration
-
 1. **Environment Variables**: Clone `.env.example` to `.env` and populate the following:
    ```env
-   VITE_SUPABASE_URL=your_supabase_url
-   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   VITE_FIREBASE_API_KEY=your_firebase_api_key
+   VITE_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
+   VITE_FIREBASE_PROJECT_ID=your_firebase_project_id
    GEMINI_API_KEY=your_gemini_api_key
    ```
 
-2. **Database Setup**: Run the provided `supabase_migration.sql` in your Supabase SQL Editor to set up the `feedback` and `profiles` tables.
+2. **Firebase Setup**: Ensure your Firebase project is configured with Authentication (Google Provider) and Firestore Database. Refer to [SECURITY_FIX.md](./SECURITY_FIX.md) for local configuration details.
 
 3. **Install Dependencies**:
    ```bash
