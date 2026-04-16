@@ -2,6 +2,14 @@
 
 All notable changes to the KRONOS AI project will be documented in this file.
 
+## [1.2.1] - 2026-04-16
+
+### Fixed
+- **ErrorBoundary**: Resolved TypeScript `this.props` and `this.state` access errors by installing `@types/react` and refining component structure.
+- **UserFeedbackForm**: Corrected data destructuring from Supabase response to prevent `undefined` errors.
+- **Form Validation**: Added `noValidate` to `UserFeedbackForm` to ensure consistent custom validation behavior across environments.
+- **Tests**: Fixed button label regex and utility test assertions to match implementation.
+
 ## [1.2.0] - 2026-04-16
 
 ### Added
