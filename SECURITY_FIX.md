@@ -11,6 +11,7 @@ We identified that real Firebase credentials (including API Key) were committed 
 4.  **Refactored `src/firebase.ts`**: Updated the initialization logic to prioritize environment variables (`VITE_FIREBASE_*`) with fallbacks to the configuration files.
 5.  **Updated `.env.example`**: Added the new Firebase environment variables.
 6.  **Created `setup-dev.sh`**: A utility script to help developers set up their local configuration safely.
+7.  **Added Environment Guardrails**: Implemented a hard validation check in `src/firebase.ts` to immediately halt execution and alert developers if they attempt to boot the environment using placeholder (`YOUR_API_KEY`) credentials.
 
 ## ⚠️ MANDATORY SECURITY ACTIONS
 
