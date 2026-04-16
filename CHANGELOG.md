@@ -2,6 +2,17 @@
 
 All notable changes to the KRONOS AI project will be documented in this file.
 
+## [1.7.0] - 2026-04-16
+
+### Added
+- **Dynamic Energy Analysis**: Integrated real-time energy score prediction into the `geminiService` and `CommandCenter`, allowing the AI to autonomously assess tactical demand.
+- **Internal System Routing**: Implemented a state-driven navigation architecture within the `Sidebar` and `App` root to handle transitions between Calendar, Insights, and Settings views.
+- **Brand Identity Overhaul**: Redesigned the `LoginScreen` with a bespoke tactical shield icon, gradient effects, and high-fidelity "God Mode" ambient glows.
+
+### Fixed
+- **Situational Awareness**: Enhanced the `CalendarGrid` with high-visibility "Today" highlighting and temporal status markers.
+- **Temporal Paradox Shielding**: Implemented strict date-range validation in the `EventDialog` to prevent invalid event synthesis (end times before start times).
+
 ## [1.6.0] - 2026-04-16
 
 ### Added
