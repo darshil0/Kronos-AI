@@ -2,6 +2,13 @@
 
 All notable changes to the KRONOS AI project will be documented in this file.
 
+## [1.6.0] - 2026-04-16
+
+### Added
+- **Direct Tactical Planning**: Enabled the ability to authorize new missions (create events) directly by clicking empty spaces within the tactical calendar grid.
+- **Dynamic Chronos Navigation**: Implemented interactive month navigation controls (Next, Previous, and Today) within the `CalendarGrid` header for seamless temporal shifting.
+- **Multimodal Event Intel Dialog**: Refactored the `EventDialog` into a dual-purpose console that handles both existing event modification and new mission synthesis.
+
 ## [1.5.0] - 2026-04-16
 
 ### Changed
