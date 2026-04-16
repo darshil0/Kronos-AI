@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { Button } from '@/components/ui/button';
+import * as React from "react";
+import { Button } from "@/components/ui/button";
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -10,7 +10,10 @@ interface ErrorBoundaryState {
   error: Error | null;
 }
 
-export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     (this as any).state = { hasError: false, error: null };
@@ -32,7 +35,8 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
           }
         }
       } catch (e) {
-        errorMessage = self.state.error?.message || "An unexpected error occurred.";
+        errorMessage =
+          self.state.error?.message || "An unexpected error occurred.";
       }
 
       return (
@@ -40,7 +44,10 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
           <div className="max-w-md text-center space-y-4">
             <h2 className="text-2xl font-bold text-red-400">System Error</h2>
             <p className="text-white/60">{errorMessage}</p>
-            <Button onClick={() => window.location.reload()} className="bg-red-600 hover:bg-red-500">
+            <Button
+              onClick={() => window.location.reload()}
+              className="bg-red-600 hover:bg-red-500"
+            >
               Reload Interface
             </Button>
           </div>

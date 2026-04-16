@@ -12,13 +12,16 @@ export function validateEmail(email: string): boolean {
  * Sanitizes input text by trimming and removing extra spaces.
  */
 export function sanitizeInput(text: string): string {
-  return text.trim().replace(/\s+/g, ' ');
+  return text.trim().replace(/\s+/g, " ");
 }
 
 /**
  * Generates an AI prompt header for summarizing feedback.
  */
-export function generateAIFeedbackPrompt(subject: string, message: string): string {
+export function generateAIFeedbackPrompt(
+  subject: string,
+  message: string,
+): string {
   return `Please analyze and categorize the following user feedback. 
 Subject: ${subject}
 Message: ${message}
