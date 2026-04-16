@@ -1,34 +1,39 @@
-// src/__tests__/integration/feedbackFlow.test.ts
+// src/__tests__/integration/feedbackFlow.test.tsx
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { UserFeedbackForm } from '../../components/UserFeedbackForm';
-import { supabase } from '../../lib/supabaseClient';
+
+const { mockInsert, mockFrom, mockGetUser } = vi.hoisted(() => ({
+  mockInsert: vi.fn().mockResolvedValue({ error: null }),
+  mockFrom: vi.fn().mockReturnThis(),
+  mockGetUser: vi.fn().mockResolvedValue({ data: { user: null }, error: null }),
+}));
 
 vi.mock('../../lib/supabaseClient', () => ({
   supabase: {
     auth: {
-      getUser: vi.fn(),
+      getUser: mockGetUser,
     },
-    from: vi.fn(() => ({
-      insert: vi.fn(),
-    })),
+    from: mockFrom.mockReturnValue({
+      insert: mockInsert,
+    }),
   },
 }));
 
 describe('Integration: Feedback Submission Flow', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockGetUser.mockResolvedValue({ data: { user: null }, error: null });
+    mockInsert.mockResolvedValue({ error: null });
+    mockFrom.mockReturnValue({ insert: mockInsert });
   });
 
   it('completes full flow: user fills form → submits → success shown', async () => {
     // 1. Mock user as logged in
-    (supabase.auth.getUser as any).mockResolvedValue({
+    mockGetUser.mockResolvedValue({
       data: { user: { email: 'pilot@kronos.ai' } },
       error: null,
     });
-
-    // 2. Mock successful insert
-    (supabase.from as any)().insert.mockResolvedValue({ error: null });
 
     render(<UserFeedbackForm />);
 
@@ -43,11 +48,12 @@ describe('Integration: Feedback Submission Flow', () => {
     fireEvent.change(screen.getByLabelText(/Message/i), { target: { value: 'Schedule optimization is working' } });
 
     // 5. Submit
-    fireEvent.click(screen.getByRole('button', { name: /SubmitTransmission/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Submit Transmission/i }));
 
     // 6. Verify row inserted with correct sanitized data
     await waitFor(() => {
-      expect((supabase.from as any)().insert).toHaveBeenCalledWith([{
+      expect(mockFrom).toHaveBeenCalledWith('feedback');
+      expect(mockInsert).toHaveBeenCalledWith([{
         email: 'pilot@kronos.ai',
         subject: 'Operational Review',
         message: 'Schedule optimization is working'
@@ -61,7 +67,7 @@ describe('Integration: Feedback Submission Flow', () => {
   it('handles login mid-session simulation (email pre-fill triggers on render)', async () => {
     // Current setup triggers on mount. Simulation: form rendered -> auth state changed -> email updated implies re-render or internal effect update
     // Simulation: user logs in -> component renders
-    (supabase.auth.getUser as any).mockResolvedValue({
+    mockGetUser.mockResolvedValue({
       data: { user: { email: 'new-user@kronos.ai' } },
       error: null,
     });

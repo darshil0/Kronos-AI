@@ -94,7 +94,7 @@ export function UserFeedbackForm() {
       <CardHeader>
         <CardTitle className="text-white">Transmit Feedback</CardTitle>
       </CardHeader>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email" className="text-white/60">Email</Label>
