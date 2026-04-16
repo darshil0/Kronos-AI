@@ -28,7 +28,10 @@ describe('Integration: Feedback Submission Flow', () => {
     });
 
     // 2. Mock successful insert
-    (supabase.from as any)().insert.mockResolvedValue({ error: null });
+    const insertMock = vi.fn().mockResolvedValue({ data: null, error: null });
+    (supabase.from as any).mockReturnValue({
+      insert: insertMock,
+    });
 
     render(<UserFeedbackForm />);
 
@@ -43,11 +46,11 @@ describe('Integration: Feedback Submission Flow', () => {
     fireEvent.change(screen.getByLabelText(/Message/i), { target: { value: 'Schedule optimization is working' } });
 
     // 5. Submit
-    fireEvent.click(screen.getByRole('button', { name: /SubmitTransmission/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Submit Transmission/i }));
 
     // 6. Verify row inserted with correct sanitized data
     await waitFor(() => {
-      expect((supabase.from as any)().insert).toHaveBeenCalledWith([{
+      expect(insertMock).toHaveBeenCalledWith([{
         email: 'pilot@kronos.ai',
         subject: 'Operational Review',
         message: 'Schedule optimization is working'
