@@ -2,6 +2,14 @@
 
 All notable changes to the KRONOS AI project will be documented in this file.
 
+## [1.4.1] - 2026-04-16
+
+### Removed
+- **Legacy Supabase Orchestration**: Permanently deprecated and removed the entirety of the shadowed Supabase environment (`UserFeedbackForm.tsx`, `supabaseClient.ts`, `feedbackUtils.ts`, `supabase_migration.sql`) to strictly unify database and security mechanisms under Firebase.
+- **Orphaned Test Suites**: Deleted strictly-bound testing mock files and frameworks (`vitest.config.ts`, `src/__tests__`) originally purposed for the abandoned Supabase integration.
+- **Unused Package Dependencies**: Stripped `package.json` testing tools (`vitest`, `@testing-library/*`, `jsdom`) and redundant API layers (`@supabase/supabase-js`) to heavily debloat the build process.
+- **Dead UI Primitives**: Purged numerous unused presentation components across the `components/ui` namespace (`avatar.tsx`, `calendar.tsx`, `card.tsx`, `popover.tsx`, `sheet.tsx`, `skeleton.tsx`, `tabs.tsx`).
+
 ## [1.4.0] - 2026-04-16
 
 ### Added
