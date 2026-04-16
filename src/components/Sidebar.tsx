@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, Calendar as CalendarIcon, Zap, Users, Shield, Settings, MessageSquare } from 'lucide-react';
+import { LayoutDashboard, Calendar as CalendarIcon, Zap, Users, Shield, Settings } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Button } from '../../components/ui/button';
 import { ScrollArea } from '../../components/ui/scroll-area';

@@ -2,6 +2,12 @@
 
 All notable changes to the KRONOS AI project will be documented in this file.
 
+## [1.3.1] - 2026-04-16
+
+### Fixed
+- **TypeScript Config**: Enabled `resolveJsonModule` and `esModuleInterop` in `tsconfig.json` to allow correct importing of the JSON secrets configuration.
+- **Linting**: Removed unused component imports (`Input`, `MessageSquare`, `Search`, `CalendarIcon`) across several components (`App.tsx`, `Sidebar.tsx`, `CommandCenter.tsx`) to resolve strict `tsc` compiler and linting warnings.
+
 ## [1.3.0] - 2026-04-16
 
 ### Added
