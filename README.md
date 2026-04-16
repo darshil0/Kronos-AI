@@ -17,7 +17,7 @@ KRONOS AI is a high-performance, AI-driven calendar application designed for aut
 - **Styling**: Tailwind CSS, Shadcn UI, Framer Motion
 - **Backend/Database**: Supabase (Auth, Postgres, RLS)
 - **Intelligence**: Google Gemini API
-- **Testing**: Vitest, React Testing Library
+- **Testing & Quality Control**: Vitest, ESLint, Prettier
 - **Icons/UI**: Lucide React, Sonner (Toasts), Date-fns
 
 ## 🏁 Getting Started
@@ -52,11 +52,17 @@ We recently performed a security audit and sanitized sensitive credentials. Plea
    npm run dev
    ```
 
-## 🧪 Testing
+## 🧪 Testing & Code Quality
 
 Run the test suite to ensure tactical integrity:
 ```bash
-npm test
+npm run test
+```
+
+Perform autonomous code normalization (Prettier) and strict pattern analysis (ESLint):
+```bash
+npm run format
+npm run lint
 ```
 
 ---

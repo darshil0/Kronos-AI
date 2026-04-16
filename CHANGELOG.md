@@ -2,6 +2,17 @@
 
 All notable changes to the KRONOS AI project will be documented in this file.
 
+## [1.4.0] - 2026-04-16
+
+### Added
+- **Code Quality Ecosystem**: Successfully configured global ESLint and Prettier architecture integrated directly into standard package workflow routines.
+- **Environment Safety Guardrails**: Designed human-readable exception logic preventing the web UI from mysteriously crashing if a local `.local.json` file wasn't configured prior to Firebase boot up.
+- **Package Stability**: Restored missing core `@types/react` and `@types/react-dom` modules to securely anchor autocomplete context.
+
+### Fixed
+- **Anti-Pattern Extermination**: Liquidated wild `any` casting conventions within `geminiService.ts` and UI hooks by explicitly mapping them against rigid `CalendarEvent` interfaces and `unknown` type guards.
+- **React Component Integrity**: Refactored `ErrorBoundary.tsx` breaking away from constructor type-loopholes (`this as any`) into natively validated generic class properties.
+
 ## [1.3.1] - 2026-04-16
 
 ### Fixed
