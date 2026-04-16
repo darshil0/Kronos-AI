@@ -1,4 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
+import { CalendarEvent } from "../types";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
@@ -28,7 +29,7 @@ export async function parseSchedulingPrompt(prompt: string) {
   return JSON.parse(response.text || "{}");
 }
 
-export async function resolveConflicts(events: any[], newEvent: any) {
+export async function resolveConflicts(events: CalendarEvent[], newEvent: CalendarEvent) {
   const prompt = `Given these existing events: ${JSON.stringify(events)} and this new event: ${JSON.stringify(newEvent)}, identify conflicts and propose a resolution (reschedule lower priority, or stick with new event).`;
   
   const response = await ai.models.generateContent({

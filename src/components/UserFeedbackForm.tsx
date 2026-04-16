@@ -65,9 +65,10 @@ export function UserFeedbackForm() {
 
       setSuccess(true);
       setFormData({ email: formData.email, subject: '', message: '' }); // Reset message but keep email
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Feedback submission error:', err);
-      setError(err.message || 'Failed to submit feedback. Please try again later.');
+      const errorMessage = err instanceof Error ? err.message : (typeof err === 'object' && err !== null && 'message' in err) ? String((err as any).message) : 'Failed to submit feedback. Please try again later.';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

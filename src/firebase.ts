@@ -34,7 +34,11 @@ const resolveConfig = (): FirebaseConfig => {
   };
 };
 
-const firebaseConfig = resolveConfig();
+export const firebaseConfig = resolveConfig();
+
+if (firebaseConfig.apiKey === 'YOUR_API_KEY') {
+  throw new Error("Missing Firebase Config: Please run ./setup-dev.sh or populate the .local.json with actual credentials to run KRONOS AI.");
+}
 
 // Initialize Firebase SDK
 const app = initializeApp(firebaseConfig);
