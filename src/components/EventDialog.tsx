@@ -6,11 +6,11 @@ import {
   DialogTitle, 
   DialogFooter,
   DialogDescription
-} from '../../components/ui/dialog';
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
-import { Label } from '../../components/ui/label';
-import { Textarea } from '../../components/ui/textarea';
+} from './ui/dialog';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { Textarea } from './ui/textarea';
 import { CalendarEvent, Persona, EventType, EventStatus } from '../types';
 import { calendarService } from '../services/calendarService';
 import { toast } from 'sonner';

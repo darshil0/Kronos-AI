@@ -1,9 +1,9 @@
 import React from 'react';
 import { LayoutDashboard, Calendar as CalendarIcon, Zap, Users, Shield, Settings } from 'lucide-react';
-import { cn } from '../../lib/utils';
-import { Button } from '../../components/ui/button';
-import { ScrollArea } from '../../components/ui/scroll-area';
-import { Separator } from '../../components/ui/separator';
+import { cn } from '../lib/utils';
+import { Button } from './ui/button';
+import { ScrollArea } from './ui/scroll-area';
+import { Separator } from './ui/separator';
 
 const navigation = [
   { name: 'Today', icon: LayoutDashboard, current: true },

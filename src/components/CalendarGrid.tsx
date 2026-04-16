@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { collection, query, where, onSnapshot, orderBy } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../firebase';
-import { useAuth } from '../AuthContext';
+import { useAuth } from '../context/AuthContext';
 import { CalendarEvent } from '../types';
-import { Badge } from '../../components/ui/badge';
-import { cn } from '../../lib/utils';
+import { Badge } from './ui/badge';
+import { cn } from '../lib/utils';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from 'date-fns';
 import { EventDialog } from './EventDialog';
 

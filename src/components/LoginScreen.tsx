@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAuth } from '../AuthContext';
-import { Button } from '../../components/ui/button';
+import { useAuth } from '../context/AuthContext';
+import { Button } from './ui/button';
 
 export function LoginScreen() {
   const { signIn } = useAuth();

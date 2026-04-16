@@ -8,12 +8,12 @@ import { Sidebar } from './components/Sidebar';
 import { CalendarGrid } from './components/CalendarGrid';
 import { CommandCenter } from './components/CommandCenter';
 import { MessageSquare, Bell, Sparkles } from 'lucide-react';
-import { Button } from '../components/ui/button';
-import { TooltipProvider } from '../components/ui/tooltip';
-import { Toaster } from '../components/ui/sonner';
+import { Button } from './components/ui/button';
+import { TooltipProvider } from './components/ui/tooltip';
+import { Toaster } from './components/ui/sonner';
 
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { useAuth } from './AuthContext';
+import { useAuth } from './context/AuthContext';
 import { LoginScreen } from './components/LoginScreen';
 
 export default function App() {

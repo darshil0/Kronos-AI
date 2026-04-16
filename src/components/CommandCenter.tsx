@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Sparkles, Loader2 } from 'lucide-react';
-import { Input } from '../../components/ui/input';
+import { Input } from './ui/input';
 import { parseSchedulingPrompt } from '../services/geminiService';
 import { calendarService } from '../services/calendarService';
-import { useAuth } from '../AuthContext';
+import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import { addMinutes } from 'date-fns';
 
