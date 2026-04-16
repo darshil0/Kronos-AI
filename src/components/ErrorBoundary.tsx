@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Button } from '@/components/ui/button';
 
 interface ErrorBoundaryProps {
@@ -11,10 +11,9 @@ interface ErrorBoundaryState {
 }
 
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  state: ErrorBoundaryState;
   constructor(props: ErrorBoundaryProps) {
     super(props);
-    this.state = { hasError: false, error: null };
+    (this as any).state = { hasError: false, error: null };
   }
 
   static getDerivedStateFromError(error: Error) {
@@ -22,17 +21,18 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   }
 
   render() {
-    if (this.state.hasError) {
+    const self = this as any;
+    if (self.state.hasError) {
       let errorMessage = "Something went wrong.";
       try {
-        if (this.state.error?.message) {
-          const parsed = JSON.parse(this.state.error.message);
+        if (self.state.error?.message) {
+          const parsed = JSON.parse(self.state.error.message);
           if (parsed.error) {
             errorMessage = `Firestore Error: ${parsed.error} (${parsed.operationType} on ${parsed.path})`;
           }
         }
       } catch (e) {
-        errorMessage = this.state.error?.message || "An unexpected error occurred.";
+        errorMessage = self.state.error?.message || "An unexpected error occurred.";
       }
 
       return (
@@ -48,6 +48,6 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
       );
     }
 
-    return (this.props as any).children;
+    return self.props.children;
   }
 }
