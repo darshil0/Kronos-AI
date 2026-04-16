@@ -4,20 +4,21 @@ KRONOS AI is a high-performance, AI-driven calendar application designed for aut
 
 ## 🚀 Features
 
-- **Autonomous Command Center**: Schedule meetings, tasks, and deep work blocks using natural language.
-- **Multi-Persona Alignment**: Categorize your life into Work, Family, and Side Projects with distinct visual markers.
-- **AI Insights Engine**: Receive real-time energy peak analysis and gaps suggestions to maintain peak tactical momentum.
-- **Tactical Calendar Grid**: A high-contrast, interactive grid with full CRUD (Create, Read, Update, Delete) capabilities via the Event Intel Dialog.
-- **Professional Polish Design**: A sleek, dark-mode "God Mode" interface with glassmorphism and tactical accents.
+- **Autonomous Command Center**: Schedule meetings, tasks, and deep work blocks using high-fidelity natural language processing.
+- **Dynamic Energy Analysis**: Real-time AI prediction of energy scores (1-10) for every event to optimize tactical demand.
+- **Chronos Grid Navigation**: Interactive month-to-month traverse with high-visibility "Today" situational awareness.
+- **Direct Tactical Planning**: Create, edit, and terminate missions directly from the grid with the Multimodal Event Intel Dialog.
+- **Internal System Views**: Instant switching between Calendar, AI Insights, and System Settings via the Tactical Sidebar.
+- **Professional Polish ("God Mode")**: A sleek, dark-mode interface utilizing glassmorphism, tactical gradients, and ambient reactive glows.
 
 ## 🛠 Tech Stack
 
-- **Frontend**: React 18, TypeScript, Vite
-- **Styling**: Tailwind CSS, Shadcn UI, Framer Motion
-- **Backend/Database**: Firebase (Auth, Firestore)
-- **Intelligence**: Google Gemini API
-- **Testing & Quality Control**: ESLint, Prettier
-- **Icons/UI**: Lucide React, Sonner (Toasts), Date-fns
+- **Frontend**: React 19, TypeScript, Vite
+- **Styling**: Tailwind CSS 4, Shadcn UI, Framer Motion
+- **Backend/Database**: Firebase (Authentication, Firestore Database)
+- **Intelligence**: Google Gemini-1.5-Pro API
+- **Quality Control**: ESLint, Prettier (Integrated Workflows)
+- **Icons/UI**: Lucide React, Sonner (Tactical Toasts), Date-fns
 
 ## 🏁 Getting Started
 
@@ -27,6 +28,11 @@ We recently performed a security audit and sanitized sensitive credentials. Plea
 ### Prerequisites
 
 - Node.js (v18+)
+- Firebase Project (Auth & Firestore enabled)
+- Google AI Studio API Key
+
+### Configuration
+
 1. **Environment Variables**: Clone `.env.example` to `.env` and populate the following:
    ```env
    VITE_FIREBASE_API_KEY=your_firebase_api_key
@@ -35,29 +41,31 @@ We recently performed a security audit and sanitized sensitive credentials. Plea
    GEMINI_API_KEY=your_gemini_api_key
    ```
 
-2. **Firebase Setup**: Ensure your Firebase project is configured with Authentication (Google Provider) and Firestore Database. Refer to [SECURITY_FIX.md](./SECURITY_FIX.md) for local configuration details.
+2. **Local Secrets**: Run `./setup-dev.sh` or manually create `firebase-applet-config.local.json` with your Firebase project configurations.
 
 3. **Install Dependencies**:
    ```bash
    npm install
    ```
 
-4. **Start Development**:
+4. **Start Operations**:
    ```bash
    npm run dev
    ```
 
-## 🧪 Testing & Code Quality
+## 🧪 System Hygiene & Quality
 
-Run the test suite to ensure tactical integrity:
-```bash
-npm run test
-```
+Maintain tactical integrity with built-in quality workflows:
 
-Perform autonomous code normalization (Prettier) and strict pattern analysis (ESLint):
 ```bash
+# Perform autonomous code normalization
 npm run format
+
+# Execute strict pattern analysis
 npm run lint
+
+# Validate type safety
+npm run lint:types
 ```
 
 ---
