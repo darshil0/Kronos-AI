@@ -1,0 +1,79 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account and preferences",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Auth UID" },
+        "email": { "type": "string", "format": "email" },
+        "energy_profile": {
+          "type": "object",
+          "properties": {
+            "peaks": { "type": "array", "items": { "type": "string" } },
+            "lows": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "preferences": {
+          "type": "object",
+          "properties": {
+            "personas": { "type": "array", "items": { "type": "string" } },
+            "priorities": { "type": "object" }
+          }
+        },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "email"]
+    },
+    "CalendarEvent": {
+      "title": "CalendarEvent",
+      "description": "A scheduled event in the calendar",
+      "type": "object",
+      "properties": {
+        "user_id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "start_time": { "type": "string", "format": "date-time" },
+        "end_time": { "type": "string", "format": "date-time" },
+        "persona": { "type": "string", "enum": ["work", "family", "side"] },
+        "priority": { "type": "integer" },
+        "type": { "type": "string", "enum": ["meeting", "task", "deep_work", "admin", "travel"] },
+        "location": { "type": "string" },
+        "energy_score": { "type": "integer" },
+        "status": { "type": "string", "enum": ["confirmed", "proposed", "ghost", "cancelled"] },
+        "action_items": { "type": "array", "items": { "type": "string" } },
+        "external_id": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["user_id", "title", "start_time", "end_time", "persona", "priority", "type", "status"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "A sub-task associated with an event or standalone",
+      "type": "object",
+      "properties": {
+        "user_id": { "type": "string" },
+        "event_id": { "type": "string" },
+        "title": { "type": "string" },
+        "due_time": { "type": "string", "format": "date-time" },
+        "priority": { "type": "integer" },
+        "completed": { "type": "boolean" }
+      },
+      "required": ["user_id", "title", "completed"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profiles"
+    },
+    "/events/{eventId}": {
+      "schema": "CalendarEvent",
+      "description": "Calendar events"
+    },
+    "/tasks/{taskId}": {
+      "schema": "Task",
+      "description": "Event sub-tasks"
+    }
+  }
+}
