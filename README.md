@@ -1,24 +1,24 @@
 # KRONOS AI: Ultimate Tactical Calendar
 
-KRONOS AI is a high-performance, AI-driven calendar application designed for autonomous scheduling and tactical time management. It leverages the power of Gemini AI to parse natural language commands and Firebase for secure, real-time data persistence.
+KRONOS AI is a high-performance, AI-driven calendar application designed for autonomous scheduling and tactical time management. It leverages the power of Gemini AI to parse natural language commands and Supabase for secure, real-time data persistence.
 
 ## 🚀 Features
 
-- **Autonomous Command Center**: Schedule meetings, tasks, and deep work blocks using high-fidelity natural language processing.
-- **Dynamic Energy Analysis**: Real-time AI prediction of energy scores (1-10) for every event to optimize tactical demand.
-- **Chronos Grid Navigation**: Interactive month-to-month traverse with high-visibility "Today" situational awareness.
-- **Direct Tactical Planning**: Create, edit, and terminate missions directly from the grid with the Multimodal Event Intel Dialog.
-- **Internal System Views**: Instant switching between Calendar, AI Insights, and System Settings via the Tactical Sidebar.
-- **Professional Polish ("God Mode")**: A sleek, dark-mode interface utilizing glassmorphism, tactical gradients, and ambient reactive glows.
+- **Autonomous Command Center**: Schedule meetings, tasks, and deep work blocks using natural language.
+- **Multi-Persona Alignment**: Categorize your life into Work, Family, and Side Projects with distinct visual markers.
+- **AI Insights Engine**: Receive real-time energy peak analysis and gaps suggestions to maintain peak tactical momentum.
+- **Tactical Calendar Grid**: A high-contrast, interactive grid with full CRUD (Create, Read, Update, Delete) capabilities via the Event Intel Dialog.
+- **User Feedback Loop**: Integrated feedback system for continuous operational improvement.
+- **Professional Polish Design**: A sleek, dark-mode "God Mode" interface with glassmorphism and tactical accents.
 
 ## 🛠 Tech Stack
 
-- **Frontend**: React 19, TypeScript, Vite
-- **Styling**: Tailwind CSS 4, Shadcn UI, Framer Motion
-- **Backend/Database**: Firebase (Authentication, Firestore Database)
-- **Intelligence**: Google Gemini-1.5-Pro API
-- **Quality Control**: ESLint, Prettier (Integrated Workflows)
-- **Icons/UI**: Lucide React, Sonner (Tactical Toasts), Date-fns
+- **Frontend**: React 18, TypeScript, Vite
+- **Styling**: Tailwind CSS, Shadcn UI, Framer Motion
+- **Backend/Database**: Supabase (Auth, Postgres, RLS)
+- **Intelligence**: Google Gemini API
+- **Testing**: Vitest, React Testing Library
+- **Icons/UI**: Lucide React, Sonner (Toasts), Date-fns
 
 ## 🏁 Getting Started
 
@@ -28,44 +28,35 @@ We recently performed a security audit and sanitized sensitive credentials. Plea
 ### Prerequisites
 
 - Node.js (v18+)
-- Firebase Project (Auth & Firestore enabled)
+- Supabase Account
 - Google AI Studio API Key
 
 ### Configuration
 
 1. **Environment Variables**: Clone `.env.example` to `.env` and populate the following:
    ```env
-   VITE_FIREBASE_API_KEY=your_firebase_api_key
-   VITE_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
-   VITE_FIREBASE_PROJECT_ID=your_firebase_project_id
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
    GEMINI_API_KEY=your_gemini_api_key
    ```
 
-2. **Local Secrets**: Run `./setup-dev.sh` or manually create `firebase-applet-config.local.json` with your Firebase project configurations.
+2. **Database Setup**: Run the provided `supabase_migration.sql` in your Supabase SQL Editor to set up the `feedback` and `profiles` tables.
 
 3. **Install Dependencies**:
    ```bash
    npm install
    ```
 
-4. **Start Operations**:
+4. **Start Development**:
    ```bash
    npm run dev
    ```
 
-## 🧪 System Hygiene & Quality
+## 🧪 Testing
 
-Maintain tactical integrity with built-in quality workflows:
-
+Run the test suite to ensure tactical integrity:
 ```bash
-# Perform autonomous code normalization
-npm run format
-
-# Execute strict pattern analysis
-npm run lint
-
-# Validate type safety
-npm run lint:types
+npm test
 ```
 
 ---

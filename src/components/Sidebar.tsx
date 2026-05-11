@@ -1,9 +1,9 @@
 import React from 'react';
-import { LayoutDashboard, Calendar as CalendarIcon, Zap, Users, Shield, Settings } from 'lucide-react';
-import { cn } from '../lib/utils';
-import { Button } from './ui/button';
-import { ScrollArea } from './ui/scroll-area';
-import { Separator } from './ui/separator';
+import { LayoutDashboard, Calendar as CalendarIcon, Zap, Users, Shield, Settings, MessageSquare } from 'lucide-react';
+import { cn } from '../../lib/utils';
+import { Button } from '../../components/ui/button';
+import { ScrollArea } from '../../components/ui/scroll-area';
+import { Separator } from '../../components/ui/separator';
 
 const navigation = [
   { name: 'Today', icon: LayoutDashboard, current: true },
@@ -18,12 +18,7 @@ const personas = [
   { name: 'Side Project', color: 'bg-[#f59e0b]' },
 ];
 
-interface SidebarProps {
-  currentView: string;
-  onViewChange: (view: string) => void;
-}
-
-export function Sidebar({ currentView, onViewChange }: SidebarProps) {
+export function Sidebar() {
   return (
     <div className="flex h-full w-[240px] flex-col glass-dark border-r border-white/10 text-white bg-zinc-900/30">
       <div className="flex h-16 shrink-0 items-center px-6 gap-2">
@@ -39,10 +34,9 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
                 <Button
                   key={item.name}
                   variant="ghost"
-                  onClick={() => onViewChange(item.name === 'Today' ? 'Calendar' : item.name)}
                   className={cn(
                     "w-full justify-start gap-3 text-white hover:bg-white/10",
-                    (currentView === item.name || (item.name === 'Today' && currentView === 'Calendar')) && "bg-white/10"
+                    item.current && "bg-white/10"
                   )}
                 >
                   <item.icon className="h-4 w-4" />
@@ -79,14 +73,7 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
           <Shield className="h-4 w-4" />
           SHIELD MODE
         </Button>
-        <Button 
-          variant="ghost" 
-          onClick={() => onViewChange('Settings')}
-          className={cn(
-            "w-full justify-start gap-3 text-white/60 hover:text-white hover:bg-white/10",
-            currentView === 'Settings' && "text-white bg-white/10"
-          )}
-        >
+        <Button variant="ghost" className="w-full justify-start gap-3 text-white/60 hover:text-white hover:bg-white/10">
           <Settings className="h-4 w-4" />
           Settings
         </Button>

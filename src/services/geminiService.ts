@@ -1,14 +1,13 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { CalendarEvent } from "../types";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
-export async function parseSchedulingPrompt(prompt: string) {
+export async function parseSchedulingPrompt(prompt: string, currentTime: string = new Date().toISOString()) {
   const response = await ai.models.generateContent({
     model: "gemini-3.1-pro-preview",
-    contents: prompt,
+    contents: `Current Time: ${currentTime}\nPrompt: ${prompt}`,
     config: {
-      systemInstruction: "You are the Ultimate AI Calendar assistant. Parse natural language scheduling requests. Return a JSON object with title, start_time, duration_minutes, priority (1-10), type (meeting, task, deep_work, admin, travel), persona (work, family, side), and energy_score (1-10 based on how demanding the task is). Use ISO 8601 for dates.",
+      systemInstruction: "You are the Ultimate AI Calendar assistant. Parse natural language scheduling requests. Return a JSON object with title, start_time, duration_minutes, priority (1-10), type (meeting, task, deep_work, admin, travel), and persona (work, family, side). Use ISO 8601 for dates.",
       responseMimeType: "application/json",
       responseSchema: {
         type: Type.OBJECT,
@@ -19,10 +18,9 @@ export async function parseSchedulingPrompt(prompt: string) {
           priority: { type: Type.NUMBER },
           type: { type: Type.STRING },
           persona: { type: Type.STRING },
-          energy_score: { type: Type.NUMBER },
           action_items: { type: Type.ARRAY, items: { type: Type.STRING } },
         },
-        required: ["title", "start_time", "duration_minutes", "priority", "type", "persona", "energy_score"],
+        required: ["title", "start_time", "duration_minutes", "priority", "type", "persona"],
       },
     },
   });
@@ -30,14 +28,35 @@ export async function parseSchedulingPrompt(prompt: string) {
   return JSON.parse(response.text || "{}");
 }
 
-export async function resolveConflicts(events: CalendarEvent[], newEvent: CalendarEvent) {
-  const prompt = `Given these existing events: ${JSON.stringify(events)} and this new event: ${JSON.stringify(newEvent)}, identify conflicts and propose a resolution (reschedule lower priority, or stick with new event).`;
+export async function resolveConflicts(existingEvents: any[], newEvent: any) {
+  const prompt = `
+    EXISTING EVENTS (next 24h): ${JSON.stringify(existingEvents)}
+    NEW EVENT CANDIDATE: ${JSON.stringify(newEvent)}
+    
+    CRITICAL ANALYZER:
+    1. Check for time overlaps.
+    2. Check ENERGY ALIGNMENT:
+       - Morning (8am-12pm): Energy peaks. Prefer 'deep_work' or high-priority meetings.
+       - Afternoon (1pm-4pm): Energy dip. Suggest 'admin' or low-priority tasks.
+    3. PRIORITY RESOLUTION:
+       - If conflict: Higher priority wins.
+       - If priority is equal: Keep existing event unless new event is more critical.
+    
+    OUTPUT FORMAT (JSON):
+    {
+      "conflict": boolean,
+      "conflicting_events": string[], // IDs of conflicting events
+      "action": "schedule" | "reschedule_existing" | "suggest_alternative",
+      "suggested_start_time": string, // ISO 8601, only if action is 'suggest_alternative' or 'reschedule_existing'
+      "analysis": string // Short tactical explanation
+    }
+  `;
   
   const response = await ai.models.generateContent({
     model: "gemini-3.1-pro-preview",
     contents: prompt,
     config: {
-      systemInstruction: "You are a genius scheduler. Resolve conflicts by prioritizing higher priority scores and deep work windows.",
+      systemInstruction: "You are a tactical operations scheduler. Analyze overlaps and energy alignment. Prioritize executive function during energy peaks.",
       responseMimeType: "application/json",
     },
   });

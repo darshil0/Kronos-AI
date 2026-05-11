@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { collection, query, where, onSnapshot, orderBy } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../firebase';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../AuthContext';
 import { CalendarEvent } from '../types';
-import { Badge } from './ui/badge';
-import { Button } from './ui/button';
-import { cn } from '../lib/utils';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, addMonths, subMonths, isToday } from 'date-fns';
+import { Badge } from '../../components/ui/badge';
+import { cn } from '../../lib/utils';
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from 'date-fns';
 import { EventDialog } from './EventDialog';
 
 export function CalendarGrid() {
   const { user } = useAuth();
   const [events, setEvents] = useState<CalendarEvent[]>([]);
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate] = useState(new Date());
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [defaultDate, setDefaultDate] = useState<Date | undefined>(undefined);
 
   useEffect(() => {
     if (!user) return;
@@ -51,35 +48,7 @@ export function CalendarGrid() {
     <div className="flex-1 p-5 overflow-auto bg-black/10">
       <div className="h-full bg-zinc-900/70 backdrop-blur-xl rounded-xl border border-white/10 overflow-hidden flex flex-col shadow-2xl">
         <div className="flex items-center justify-between p-4 border-b border-white/10 bg-white/2">
-          <div className="flex items-center gap-4">
-            <h2 className="text-xl font-bold text-white min-w-[200px]">{format(currentDate, 'MMMM yyyy')}</h2>
-            <div className="flex gap-1">
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="h-8 w-8 text-white/60 hover:text-white"
-                onClick={() => setCurrentDate(subMonths(currentDate, 1))}
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="h-8 w-8 text-white/60 hover:text-white"
-                onClick={() => setCurrentDate(addMonths(currentDate, 1))}
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="ml-2 text-[10px] h-7 border-white/10 hover:bg-white/5"
-                onClick={() => setCurrentDate(new Date())}
-              >
-                Today
-              </Button>
-            </div>
-          </div>
+          <h2 className="text-xl font-bold text-white">{format(currentDate, 'MMMM yyyy')}</h2>
           <div className="flex gap-2">
             <Badge variant="outline" className="text-blue-400 border-blue-400/30 bg-blue-400/10">Work</Badge>
             <Badge variant="outline" className="text-green-400 border-green-400/30 bg-green-400/10">Family</Badge>
@@ -100,28 +69,16 @@ export function CalendarGrid() {
             return (
               <div
                 key={i}
-                onClick={() => {
-                  setDefaultDate(day);
-                  setIsDialogOpen(true);
-                }}
-                className={cn(
-                  "border-r border-b border-white/10 p-2 hover:bg-white/5 transition-colors group cursor-pointer min-h-[120px]",
-                  isToday(day) && "bg-blue-500/5 ring-1 ring-inset ring-blue-500/20"
-                )}
+                className="border-r border-b border-white/10 p-2 hover:bg-white/5 transition-colors group cursor-pointer min-h-[120px]"
               >
-                <span className={cn(
-                  "text-xs font-mono transition-colors",
-                  isToday(day) ? "text-blue-400 font-bold" : "text-white/30 group-hover:text-white/80"
-                )}>
+                <span className="text-xs text-white/30 group-hover:text-white/80 transition-colors font-mono">
                   {format(day, 'd')}
-                  {isToday(day) && <span className="ml-1 text-[8px] uppercase tracking-tighter opacity-70">Today</span>}
                 </span>
                 <div className="mt-2 space-y-1">
                   {dayEvents.map(event => (
                     <div 
                       key={event.id}
-                      onClick={(e) => {
-                        e.stopPropagation();
+                      onClick={() => {
                         setSelectedEvent(event);
                         setIsDialogOpen(true);
                       }}
@@ -145,11 +102,9 @@ export function CalendarGrid() {
       <EventDialog 
         event={selectedEvent} 
         isOpen={isDialogOpen} 
-        defaultDate={defaultDate}
         onClose={() => {
           setIsDialogOpen(false);
           setSelectedEvent(null);
-          setDefaultDate(undefined);
         }} 
       />
     </div>

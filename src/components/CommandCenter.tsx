@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Sparkles, Loader2 } from 'lucide-react';
-import { Input } from './ui/input';
-import { parseSchedulingPrompt } from '../services/geminiService';
+import { Search, Sparkles, Loader2, Calendar as CalendarIcon } from 'lucide-react';
+import { Input } from '../../components/ui/input';
+import { parseSchedulingPrompt, resolveConflicts } from '../services/geminiService';
 import { calendarService } from '../services/calendarService';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../AuthContext';
 import { toast } from 'sonner';
-import { addMinutes } from 'date-fns';
+import { addMinutes, format } from 'date-fns';
 
 export function CommandCenter() {
   const [prompt, setPrompt] = useState('');
@@ -23,9 +23,49 @@ export function CommandCenter() {
 
     try {
       const parsed = await parseSchedulingPrompt(prompt);
-      
       const startTime = new Date(parsed.start_time);
       const endTime = addMinutes(startTime, parsed.duration_minutes || 60);
+
+      const nearbyEvents = await calendarService.fetchNearbyEvents(user.uid, parsed.start_time);
+      const conflictReport = await resolveConflicts(nearbyEvents, {
+        ...parsed,
+        start_time: startTime.toISOString(),
+        end_time: endTime.toISOString()
+      });
+
+      if (conflictReport.conflict) {
+        toast.info(`Tactical Overlap: ${conflictReport.analysis}`, { id });
+        
+        if (conflictReport.action === 'reschedule_existing') {
+          // Logic to update existing events if AI suggests
+          for (const eventId of conflictReport.conflicting_events) {
+            await calendarService.updateEvent(eventId, {
+              status: 'proposed',
+              description: `[RESCHEDULE REQUESTED BY KRONOS AI]: Conflict with "${parsed.title}"`
+            });
+          }
+        } else if (conflictReport.action === 'suggest_alternative' && conflictReport.suggested_start_time) {
+          const altStart = new Date(conflictReport.suggested_start_time);
+          const altEnd = addMinutes(altStart, parsed.duration_minutes || 60);
+          
+          await calendarService.addEvent({
+            user_id: user.uid,
+            title: parsed.title,
+            start_time: altStart.toISOString(),
+            end_time: altEnd.toISOString(),
+            persona: parsed.persona || 'work',
+            priority: parsed.priority || 5,
+            type: parsed.type || 'meeting',
+            status: 'confirmed',
+            energy_score: 7,
+            action_items: parsed.action_items || []
+          });
+
+          toast.success(`Alternative Slotted: "${parsed.title}" scheduled for ${format(altStart, 'PPp')}`, { id });
+          setPrompt('');
+          return;
+        }
+      }
 
       await calendarService.addEvent({
         user_id: user.uid,
@@ -36,14 +76,11 @@ export function CommandCenter() {
         priority: parsed.priority || 5,
         type: parsed.type || 'meeting',
         status: 'confirmed',
-        energy_score: parsed.energy_score || 5,
+        energy_score: 7,
         action_items: parsed.action_items || []
       });
 
-      toast.success(`Mission Success: "${parsed.title}" scheduled for ${startTime.toLocaleString()}`, {
-        id,
-        className: 'bg-green-500/20 text-green-400 border-green-500/30'
-      });
+      toast.success(`Mission Success: "${parsed.title}" scheduled.`, { id });
       setPrompt('');
     } catch (error) {
       console.error('Command center error:', error);

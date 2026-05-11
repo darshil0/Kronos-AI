@@ -31,5 +31,27 @@ export const calendarService = {
     } catch (error) {
       handleFirestoreError(error, OperationType.DELETE, `events/${id}`);
     }
+  },
+
+  async fetchNearbyEvents(userId: string, startTime: string) {
+    try {
+      const start = new Date(startTime);
+      const dayStart = new Date(start);
+      dayStart.setHours(0, 0, 0, 0);
+      const dayEnd = new Date(start);
+      dayEnd.setHours(23, 59, 59, 999);
+
+      const q = query(
+        collection(db, 'events'),
+        where('user_id', '==', userId),
+        where('start_time', '>=', dayStart.toISOString()),
+        where('start_time', '<=', dayEnd.toISOString())
+      );
+      const snapshot = await getDocs(q);
+      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+      handleFirestoreError(error, OperationType.LIST, 'events');
+      return [];
+    }
   }
 };
