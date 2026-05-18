@@ -1,6 +1,6 @@
 // src/__tests__/integration/feedbackFlow.test.ts
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { UserFeedbackForm } from '../../components/UserFeedbackForm';
 import { supabase } from '../../lib/supabaseClient';
 
@@ -22,13 +22,13 @@ describe('Integration: Feedback Submission Flow', () => {
 
   it('completes full flow: user fills form → submits → success shown', async () => {
     // 1. Mock user as logged in
-    (supabase.auth.getUser as any).mockResolvedValue({
+    (supabase.auth.getUser as Mock).mockResolvedValue({
       data: { user: { email: 'pilot@kronos.ai' } },
       error: null,
     });
 
     // 2. Mock successful insert
-    (supabase.from as any)().insert.mockResolvedValue({ error: null });
+    ((supabase.from as Mock)().insert as Mock).mockResolvedValue({ error: null });
 
     render(<UserFeedbackForm />);
 
@@ -47,7 +47,7 @@ describe('Integration: Feedback Submission Flow', () => {
 
     // 6. Verify row inserted with correct sanitized data
     await waitFor(() => {
-      expect((supabase.from as any)().insert).toHaveBeenCalledWith([{
+      expect(((supabase.from as Mock)().insert as Mock)).toHaveBeenCalledWith([{
         email: 'pilot@kronos.ai',
         subject: 'Operational Review',
         message: 'Schedule optimization is working'
@@ -61,7 +61,7 @@ describe('Integration: Feedback Submission Flow', () => {
   it('handles login mid-session simulation (email pre-fill triggers on render)', async () => {
     // Current setup triggers on mount. Simulation: form rendered -> auth state changed -> email updated implies re-render or internal effect update
     // Simulation: user logs in -> component renders
-    (supabase.auth.getUser as any).mockResolvedValue({
+    (supabase.auth.getUser as Mock).mockResolvedValue({
       data: { user: { email: 'new-user@kronos.ai' } },
       error: null,
     });

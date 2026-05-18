@@ -1,9 +1,8 @@
 // src/__tests__/UserFeedbackForm.test.tsx
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { UserFeedbackForm } from '../components/UserFeedbackForm';
 import { supabase } from '../lib/supabaseClient';
-import { mockInsert, mockGetUser } from './mocks/supabase';
 
 vi.mock('../lib/supabaseClient', () => ({
   supabase: {
@@ -19,8 +18,8 @@ vi.mock('../lib/supabaseClient', () => ({
 describe('UserFeedbackForm', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (supabase.auth.getUser as any).mockResolvedValue({ data: { user: null }, error: null });
-    (supabase.from as any)().insert.mockResolvedValue({ error: null });
+    (supabase.auth.getUser as Mock).mockResolvedValue({ data: { user: null }, error: null });
+    ((supabase.from as Mock)().insert as Mock).mockResolvedValue({ error: null });
   });
 
   it('renders correctly when user is not logged in', async () => {
@@ -30,7 +29,7 @@ describe('UserFeedbackForm', () => {
   });
 
   it('pre-fills email when user is logged in', async () => {
-    (supabase.auth.getUser as any).mockResolvedValue({
+    (supabase.auth.getUser as Mock).mockResolvedValue({
       data: { user: { email: 'operator@kronos.ai' } },
       error: null,
     });
@@ -55,7 +54,7 @@ describe('UserFeedbackForm', () => {
   });
 
   it('calls supabase.from().insert() with correct payload on valid submit', async () => {
-    (supabase.auth.getUser as any).mockResolvedValue({
+    (supabase.auth.getUser as Mock).mockResolvedValue({
       data: { user: { email: 'admin@kronos.ai' } },
       error: null,
     });
@@ -71,7 +70,7 @@ describe('UserFeedbackForm', () => {
 
     await waitFor(() => {
       expect(supabase.from).toHaveBeenCalledWith('feedback');
-      expect((supabase.from as any)().insert).toHaveBeenCalledWith([{
+      expect(((supabase.from as Mock)().insert as Mock)).toHaveBeenCalledWith([{
         email: 'admin@kronos.ai',
         subject: 'Bug',
         message: 'Fix this'
@@ -92,7 +91,7 @@ describe('UserFeedbackForm', () => {
   });
 
   it('shows error message when Supabase returns an error', async () => {
-    (supabase.from as any)().insert.mockResolvedValue({ error: { message: 'Database failure' } });
+    ((supabase.from as Mock)().insert as Mock).mockResolvedValue({ error: { message: 'Database failure' } });
     
     render(<UserFeedbackForm />);
     
@@ -107,7 +106,7 @@ describe('UserFeedbackForm', () => {
 
   it('disables submit button while loading', async () => {
     // Delayed mock
-    (supabase.from as any)().insert.mockImplementation(() => new Promise(resolve => setTimeout(() => resolve({ error: null }), 100)));
+    ((supabase.from as Mock)().insert as Mock).mockImplementation(() => new Promise(resolve => setTimeout(() => resolve({ error: null }), 100)));
     
     render(<UserFeedbackForm />);
     
