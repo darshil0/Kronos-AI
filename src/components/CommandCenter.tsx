@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Sparkles, Loader2, Calendar as CalendarIcon } from 'lucide-react';
+import { Sparkles, Loader2 } from 'lucide-react';
 import { Input } from '../../components/ui/input';
 import { parseSchedulingPrompt, resolveConflicts } from '../services/geminiService';
 import { calendarService } from '../services/calendarService';

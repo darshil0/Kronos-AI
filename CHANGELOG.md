@@ -2,6 +2,13 @@
 
 All notable changes to the KRONOS AI project will be documented in this file.
 
+## [1.4.0] - 2026-05-18
+
+### Fixed
+- **TypeScript Config**: Added `resolveJsonModule` to `tsconfig.json` to fix JSON import errors in `firebase.ts`.
+- **Clean Code**: Removed unused imports (`Input`, `Search`, `MessageSquare`, `CalendarIcon`, `X`) across multiple components (`App.tsx`, `Sidebar.tsx`, `CommandCenter.tsx`, `EventDialog.tsx`).
+- **Error Boundary**: Fixed strict typing for `state` in `ErrorBoundary.tsx`, removing `any` type casting.
+
 ## [1.3.0] - 2026-04-16
 
 ### Added

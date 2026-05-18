@@ -8,7 +8,6 @@ import { Sidebar } from './components/Sidebar';
 import { CalendarGrid } from './components/CalendarGrid';
 import { CommandCenter } from './components/CommandCenter';
 import { MessageSquare, Bell, Sparkles } from 'lucide-react';
-import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { TooltipProvider } from '../components/ui/tooltip';
 import { Toaster } from '../components/ui/sonner';

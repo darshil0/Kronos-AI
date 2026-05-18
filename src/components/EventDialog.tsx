@@ -14,7 +14,7 @@ import { Textarea } from '../../components/ui/textarea';
 import { CalendarEvent, Persona, EventType, EventStatus } from '../types';
 import { calendarService } from '../services/calendarService';
 import { toast } from 'sonner';
-import { Trash2, Save, X } from 'lucide-react';
+import { Trash2, Save } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface EventDialogProps {

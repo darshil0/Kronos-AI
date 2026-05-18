@@ -13,7 +13,7 @@ interface ErrorBoundaryState {
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
-    (this as any).state = { hasError: false, error: null };
+    this.state = { hasError: false, error: null };
   }
 
   static getDerivedStateFromError(error: Error) {
@@ -21,18 +21,17 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   }
 
   render() {
-    const self = this as any;
-    if (self.state.hasError) {
+    if (this.state.hasError) {
       let errorMessage = "Something went wrong.";
       try {
-        if (self.state.error?.message) {
-          const parsed = JSON.parse(self.state.error.message);
+        if (this.state.error?.message) {
+          const parsed = JSON.parse(this.state.error.message);
           if (parsed.error) {
             errorMessage = `Firestore Error: ${parsed.error} (${parsed.operationType} on ${parsed.path})`;
           }
         }
       } catch (e) {
-        errorMessage = self.state.error?.message || "An unexpected error occurred.";
+        errorMessage = this.state.error?.message || "An unexpected error occurred.";
       }
 
       return (
@@ -48,6 +47,6 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
       );
     }
 
-    return self.props.children;
+    return this.props.children;
   }
 }
