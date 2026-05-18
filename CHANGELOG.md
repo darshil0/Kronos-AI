@@ -2,6 +2,12 @@
 
 All notable changes to the KRONOS AI project will be documented in this file.
 
+## [1.4.1] - 2026-05-18
+
+### Fixed
+- **Type Safety**: Removed remaining `any` types in `geminiService.ts` and `UserFeedbackForm.tsx`.
+- **Testing**: Fixed broken integration test query for the feedback submit button.
+
 ## [1.4.0] - 2026-05-18
 
 ### Fixed

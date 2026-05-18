@@ -1,4 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
+import { CalendarEvent } from '../types';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
@@ -28,7 +29,7 @@ export async function parseSchedulingPrompt(prompt: string, currentTime: string 
   return JSON.parse(response.text || "{}");
 }
 
-export async function resolveConflicts(existingEvents: any[], newEvent: any) {
+export async function resolveConflicts(existingEvents: CalendarEvent[], newEvent: Record<string, unknown>) {
   const prompt = `
     EXISTING EVENTS (next 24h): ${JSON.stringify(existingEvents)}
     NEW EVENT CANDIDATE: ${JSON.stringify(newEvent)}
