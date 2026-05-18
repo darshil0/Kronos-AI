@@ -2,6 +2,13 @@
 
 All notable changes to the KRONOS AI project will be documented in this file.
 
+## [1.4.2] - 2026-05-18
+
+### Fixed
+- **Dependency Management**: Fixed duplicated `vite` dependency and moved `@tailwindcss/vite` and `@vitejs/plugin-react` to `devDependencies` in `package.json`.
+- **Runtime Errors**: Fixed `__dirname` undefined error in `vite.config.ts` ES module scope by implementing `fileURLToPath`.
+- **Configuration**: Added `"include": ["src", "components", "lib"]` in `tsconfig.json` to properly compile all project files.
+
 ## [1.4.1] - 2026-05-18
 
 ### Fixed
