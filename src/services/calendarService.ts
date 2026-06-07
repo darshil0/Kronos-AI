@@ -33,7 +33,7 @@ export const calendarService = {
     }
   },
 
-  async fetchNearbyEvents(userId: string, startTime: string) {
+  async fetchNearbyEvents(userId: string, startTime: string): Promise<CalendarEvent[]> {
     try {
       const start = new Date(startTime);
       const dayStart = new Date(start);
@@ -48,7 +48,7 @@ export const calendarService = {
         where('start_time', '<=', dayEnd.toISOString())
       );
       const snapshot = await getDocs(q);
-      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as CalendarEvent));
     } catch (error) {
       handleFirestoreError(error, OperationType.LIST, 'events');
       return [];
