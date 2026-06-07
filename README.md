@@ -60,4 +60,4 @@ npm test
 ```
 
 ---
-*Built with operational excellence for the modern digital operative.*
+*Built with operational excellence for the modern digital operative. Optimized for AI-driven tactical scheduling.*
