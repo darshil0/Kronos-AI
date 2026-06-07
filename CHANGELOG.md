@@ -2,6 +2,13 @@
 
 All notable changes to the KRONOS AI project will be documented in this file.
 
+## [1.4.3] - 2025-05-22
+
+### Fixed
+- **Type Safety**: Installed missing `@types/react` and `@types/react-dom` to resolve linting issues in React components.
+- **Service Layer**: Explicitly typed `calendarService.fetchNearbyEvents` to return `Promise<CalendarEvent[]>`, improving type safety and resolving component-level TS errors.
+- **Testing Integrity**: Refactored Supabase mocks in `UserFeedbackForm.test.tsx` and `feedbackFlow.test.tsx` using `vi.hoisted` to ensure consistent mocking and resolve asynchronous race conditions.
+
 ## [1.4.2] - 2026-05-18
 
 ### Fixed

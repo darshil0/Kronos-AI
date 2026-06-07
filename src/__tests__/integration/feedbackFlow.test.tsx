@@ -4,20 +4,29 @@ import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { UserFeedbackForm } from '../../components/UserFeedbackForm';
 import { supabase } from '../../lib/supabaseClient';
 
+const { mockInsert, mockFrom } = vi.hoisted(() => ({
+  mockInsert: vi.fn(),
+  mockFrom: vi.fn(() => ({
+    insert: vi.fn(),
+  })),
+}));
+
+// Re-wire mockInsert to the one inside mockFrom
+mockFrom.mockReturnValue({ insert: mockInsert });
+
 vi.mock('../../lib/supabaseClient', () => ({
   supabase: {
     auth: {
       getUser: vi.fn(),
     },
-    from: vi.fn(() => ({
-      insert: vi.fn(),
-    })),
+    from: mockFrom,
   },
 }));
 
 describe('Integration: Feedback Submission Flow', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockInsert.mockResolvedValue({ error: null });
   });
 
   it('completes full flow: user fills form → submits → success shown', async () => {
@@ -26,9 +35,6 @@ describe('Integration: Feedback Submission Flow', () => {
       data: { user: { email: 'pilot@kronos.ai' } },
       error: null,
     });
-
-    // 2. Mock successful insert
-    ((supabase.from as Mock)().insert as Mock).mockResolvedValue({ error: null });
 
     render(<UserFeedbackForm />);
 
@@ -47,7 +53,7 @@ describe('Integration: Feedback Submission Flow', () => {
 
     // 6. Verify row inserted with correct sanitized data
     await waitFor(() => {
-      expect(((supabase.from as Mock)().insert as Mock)).toHaveBeenCalledWith([{
+      expect(mockInsert).toHaveBeenCalledWith([{
         email: 'pilot@kronos.ai',
         subject: 'Operational Review',
         message: 'Schedule optimization is working'
