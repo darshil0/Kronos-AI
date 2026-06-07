@@ -65,10 +65,10 @@ export function UserFeedbackForm() {
 
       setSuccess(true);
       setFormData({ email: formData.email, subject: '', message: '' }); // Reset message but keep email
-    } catch (err: unknown) {
+    } catch (err: any) {
       console.error('Feedback submission error:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      setError(errorMessage || 'Failed to submit feedback. Please try again later.');
+      const errorMessage = err?.message || 'Unknown error';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -95,7 +95,7 @@ export function UserFeedbackForm() {
       <CardHeader>
         <CardTitle className="text-white">Transmit Feedback</CardTitle>
       </CardHeader>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email" className="text-white/60">Email</Label>

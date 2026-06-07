@@ -4,14 +4,22 @@ import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { UserFeedbackForm } from '../components/UserFeedbackForm';
 import { supabase } from '../lib/supabaseClient';
 
+const { mockInsert, mockFrom } = vi.hoisted(() => ({
+  mockInsert: vi.fn(),
+  mockFrom: vi.fn(() => ({
+    insert: vi.fn(),
+  })),
+}));
+
+// Re-wire mockInsert to the one inside mockFrom
+mockFrom.mockReturnValue({ insert: mockInsert });
+
 vi.mock('../lib/supabaseClient', () => ({
   supabase: {
     auth: {
       getUser: vi.fn(),
     },
-    from: vi.fn(() => ({
-      insert: vi.fn(),
-    })),
+    from: mockFrom,
   },
 }));
 
@@ -19,7 +27,7 @@ describe('UserFeedbackForm', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     (supabase.auth.getUser as Mock).mockResolvedValue({ data: { user: null }, error: null });
-    ((supabase.from as Mock)().insert as Mock).mockResolvedValue({ error: null });
+    mockInsert.mockResolvedValue({ error: null });
   });
 
   it('renders correctly when user is not logged in', async () => {
@@ -69,8 +77,8 @@ describe('UserFeedbackForm', () => {
     fireEvent.click(screen.getByRole('button', { name: /Submit/i }));
 
     await waitFor(() => {
-      expect(supabase.from).toHaveBeenCalledWith('feedback');
-      expect(((supabase.from as Mock)().insert as Mock)).toHaveBeenCalledWith([{
+      expect(mockFrom).toHaveBeenCalledWith('feedback');
+      expect(mockInsert).toHaveBeenCalledWith([{
         email: 'admin@kronos.ai',
         subject: 'Bug',
         message: 'Fix this'
@@ -91,7 +99,7 @@ describe('UserFeedbackForm', () => {
   });
 
   it('shows error message when Supabase returns an error', async () => {
-    ((supabase.from as Mock)().insert as Mock).mockResolvedValue({ error: { message: 'Database failure' } });
+    mockInsert.mockResolvedValue({ error: { message: 'Database failure' } });
     
     render(<UserFeedbackForm />);
     
@@ -106,7 +114,7 @@ describe('UserFeedbackForm', () => {
 
   it('disables submit button while loading', async () => {
     // Delayed mock
-    ((supabase.from as Mock)().insert as Mock).mockImplementation(() => new Promise(resolve => setTimeout(() => resolve({ error: null }), 100)));
+    mockInsert.mockImplementation(() => new Promise(resolve => setTimeout(() => resolve({ error: null }), 100)));
     
     render(<UserFeedbackForm />);
     
