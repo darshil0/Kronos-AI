@@ -2,6 +2,13 @@
 
 All notable changes to the KRONOS AI project will be documented in this file.
 
+## [1.4.3] - 2026-06-07
+
+### Fixed
+- **Type Safety**: Installed missing `@types/react` and `@types/react-dom` to resolve linting issues in React components.
+- **Service Layer**: Explicitly typed `calendarService.fetchNearbyEvents` to return `Promise<CalendarEvent[]>`, improving type safety and resolving component-level TS errors.
+- **Stability**: Fixed property access issues in `ErrorBoundary.tsx` that were causing build-time linting failures.
+
 ## [1.4.2] - 2026-05-18
 
 ### Fixed
