@@ -1,14 +1,18 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { CalendarEvent } from '../types';
+import { CalendarEvent } from "../types";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
-export async function parseSchedulingPrompt(prompt: string, currentTime: string = new Date().toISOString()) {
+export async function parseSchedulingPrompt(
+  prompt: string,
+  currentTime: string = new Date().toISOString(),
+) {
   const response = await ai.models.generateContent({
     model: "gemini-3.1-pro-preview",
     contents: `Current Time: ${currentTime}\nPrompt: ${prompt}`,
     config: {
-      systemInstruction: "You are the Ultimate AI Calendar assistant. Parse natural language scheduling requests. Return a JSON object with title, start_time, duration_minutes, priority (1-10), type (meeting, task, deep_work, admin, travel), and persona (work, family, side). Use ISO 8601 for dates.",
+      systemInstruction:
+        "You are the Ultimate AI Calendar assistant. Parse natural language scheduling requests. Return a JSON object with title, start_time, duration_minutes, priority (1-10), type (meeting, task, deep_work, admin, travel), and persona (work, family, side). Use ISO 8601 for dates.",
       responseMimeType: "application/json",
       responseSchema: {
         type: Type.OBJECT,
@@ -21,7 +25,14 @@ export async function parseSchedulingPrompt(prompt: string, currentTime: string 
           persona: { type: Type.STRING },
           action_items: { type: Type.ARRAY, items: { type: Type.STRING } },
         },
-        required: ["title", "start_time", "duration_minutes", "priority", "type", "persona"],
+        required: [
+          "title",
+          "start_time",
+          "duration_minutes",
+          "priority",
+          "type",
+          "persona",
+        ],
       },
     },
   });
@@ -29,7 +40,10 @@ export async function parseSchedulingPrompt(prompt: string, currentTime: string 
   return JSON.parse(response.text || "{}");
 }
 
-export async function resolveConflicts(existingEvents: CalendarEvent[], newEvent: Record<string, unknown>) {
+export async function resolveConflicts(
+  existingEvents: CalendarEvent[],
+  newEvent: Record<string, unknown>,
+) {
   const prompt = `
     EXISTING EVENTS (next 24h): ${JSON.stringify(existingEvents)}
     NEW EVENT CANDIDATE: ${JSON.stringify(newEvent)}
@@ -52,12 +66,13 @@ export async function resolveConflicts(existingEvents: CalendarEvent[], newEvent
       "analysis": string // Short tactical explanation
     }
   `;
-  
+
   const response = await ai.models.generateContent({
     model: "gemini-3.1-pro-preview",
     contents: prompt,
     config: {
-      systemInstruction: "You are a tactical operations scheduler. Analyze overlaps and energy alignment. Prioritize executive function during energy peaks.",
+      systemInstruction:
+        "You are a tactical operations scheduler. Analyze overlaps and energy alignment. Prioritize executive function during energy peaks.",
       responseMimeType: "application/json",
     },
   });

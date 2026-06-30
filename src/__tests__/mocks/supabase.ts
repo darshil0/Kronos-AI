@@ -1,5 +1,5 @@
 // src/__tests__/mocks/supabase.ts
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 export const mockInsert = vi.fn();
 export const mockFrom = vi.fn(() => ({

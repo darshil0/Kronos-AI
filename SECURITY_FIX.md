@@ -1,6 +1,7 @@
 # 🔐 Security Fix: Sensitive Data Sanitization
 
 ## summary
+
 We identified that real Firebase credentials (including API Key) were committed to the repository in `firebase-applet-config.json`. This poses a security risk as these secrets would be exposed in version control.
 
 ## 🛠 Actions Taken
@@ -17,10 +18,10 @@ We identified that real Firebase credentials (including API Key) were committed 
 **If your credentials were exposed, you MUST perform the following steps immediately:**
 
 1.  **Rotate your Firebase API Key**:
-    *   Go to the [Firebase Console](https://console.firebase.google.com/).
-    *   Navigate to **Project Settings** > **General**.
-    *   Find your Web API Key and rotate/replace it.
-    *   **Delete the old exposed key** (ending in `...1WZHCc`).
+    - Go to the [Firebase Console](https://console.firebase.google.com/).
+    - Navigate to **Project Settings** > **General**.
+    - Find your Web API Key and rotate/replace it.
+    - **Delete the old exposed key** (ending in `...1WZHCc`).
 2.  **Review Security Rules**: Ensure your Firestore and Storage security rules are strictly enforced and do not allow unauthorized access.
 3.  **Check Logs**: Audit your Firebase Authentication and Cloud Logging for any suspicious activity from the period the keys were exposed.
 
@@ -32,4 +33,5 @@ To set up your local environment securely:
 2.  Populate your local `.env` file with the variables defined in `.env.example`.
 
 ---
-*Maintained by the KRONOS AI Security Team.*
+
+_Maintained by the KRONOS AI Security Team._

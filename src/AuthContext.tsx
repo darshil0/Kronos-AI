@@ -1,8 +1,14 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
-import { auth, db } from './firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { UserProfile } from './types';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import {
+  User,
+  onAuthStateChanged,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut,
+} from "firebase/auth";
+import { auth, db } from "./firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { UserProfile } from "./types";
 
 interface AuthContextType {
   user: User | null;
@@ -24,24 +30,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(user);
       if (user) {
         // Fetch or create profile
-        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        const userDoc = await getDoc(doc(db, "users", user.uid));
         if (userDoc.exists()) {
           setProfile(userDoc.data() as UserProfile);
         } else {
           const newProfile: UserProfile = {
             id: user.uid,
-            email: user.email || '',
+            email: user.email || "",
             energy_profile: {
-              peaks: ['08:00-11:00'],
-              lows: ['14:00-16:00'],
+              peaks: ["08:00-11:00"],
+              lows: ["14:00-16:00"],
             },
             preferences: {
-              personas: ['work', 'family', 'side'],
+              personas: ["work", "family", "side"],
               priorities: { deep_work: 10, meeting: 7, task: 5 },
             },
             created_at: new Date().toISOString(),
           };
-          await setDoc(doc(db, 'users', user.uid), newProfile);
+          await setDoc(doc(db, "users", user.uid), newProfile);
           setProfile(newProfile);
         }
       } else {
@@ -72,7 +78,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-}
+};

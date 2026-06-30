@@ -2,9 +2,24 @@
 
 All notable changes to the KRONOS AI project will be documented in this file.
 
+## [1.5.0] - 2026-06-30
+
+### Added
+
+- **Testing**: Added comprehensive unit tests for `calendarService` in `src/__tests__/calendarService.test.ts`.
+
+### Changed
+
+- **Refactoring**: Extracted `AIInsights` sidebar from `App.tsx` into its own component in `src/components/AIInsights.tsx` for better maintainability.
+- **Type Safety**: Replaced `any` with `unknown` and added robust error narrowing in `UserFeedbackForm.tsx`.
+- **TypeScript Config**: Enabled `strict` mode, `noUnusedLocals`, `noUnusedParameters`, and `noFallthroughCasesInSwitch` in `tsconfig.json`.
+- **Cleanup**: Removed unused React imports across multiple components as they are no longer needed in React 19.
+- **Version**: Bumped version to 1.5.0.
+
 ## [1.4.3] - 2026-06-07
 
 ### Fixed
+
 - **Type Safety**: Installed missing `@types/react` and `@types/react-dom` to resolve linting issues in React components.
 - **Service Layer**: Explicitly typed `calendarService.fetchNearbyEvents` to return `Promise<CalendarEvent[]>`, improving type safety and resolving component-level TS errors.
 - **Stability**: Fixed property access issues in `ErrorBoundary.tsx` that were causing build-time linting failures.
@@ -12,6 +27,7 @@ All notable changes to the KRONOS AI project will be documented in this file.
 ## [1.4.2] - 2026-05-18
 
 ### Fixed
+
 - **Dependency Management**: Fixed duplicated `vite` dependency and moved `@tailwindcss/vite` and `@vitejs/plugin-react` to `devDependencies` in `package.json`.
 - **Runtime Errors**: Fixed `__dirname` undefined error in `vite.config.ts` ES module scope by implementing `fileURLToPath`.
 - **Configuration**: Added `"include": ["src", "components", "lib"]` in `tsconfig.json` to properly compile all project files.
@@ -19,12 +35,14 @@ All notable changes to the KRONOS AI project will be documented in this file.
 ## [1.4.1] - 2026-05-18
 
 ### Fixed
+
 - **Type Safety**: Removed remaining `any` types in `geminiService.ts` and `UserFeedbackForm.tsx`.
 - **Testing**: Fixed broken integration test query for the feedback submit button.
 
 ## [1.4.0] - 2026-05-18
 
 ### Fixed
+
 - **TypeScript Config**: Added `resolveJsonModule` to `tsconfig.json` to fix JSON import errors in `firebase.ts`.
 - **Clean Code**: Removed unused imports (`Input`, `Search`, `MessageSquare`, `CalendarIcon`, `X`) across multiple components (`App.tsx`, `Sidebar.tsx`, `CommandCenter.tsx`, `EventDialog.tsx`).
 - **Error Boundary**: Fixed strict typing for `state` in `ErrorBoundary.tsx`, removing `any` type casting.
@@ -32,11 +50,13 @@ All notable changes to the KRONOS AI project will be documented in this file.
 ## [1.3.0] - 2026-04-16
 
 ### Added
+
 - **Security Sanitization Layer**: Refactored `firebase.ts` to support environment variables and local secret files.
 - **Developer Onboarding**: Added `setup-dev.sh` script to securely initialize local development credentials.
 - **Security Documentation**: Created `SECURITY_FIX.md` with credential rotation protocols and audit summary.
 
 ### Fixed
+
 - **Credential Leak**: Sanitized `firebase-applet-config.json` and moved real secrets to git-ignored `.local.json`.
 - **TypeScript Stability**: Resolved persistent `TS2339` errors in `ErrorBoundary.tsx` using robust class property patterns.
 - **Environment Parity**: Updated `.gitignore` to strictly exclude all environment and local config files.
@@ -45,6 +65,7 @@ All notable changes to the KRONOS AI project will be documented in this file.
 ## [1.2.0] - 2026-04-16
 
 ### Added
+
 - **Autonomous Command Center**: New AI-powered input field in the header for natural language scheduling.
 - **Event Intel Dialog**: Reusable dialog component for viewing, editing, and deleting calendar events.
 - **AI Suggestion Engine**: Dynamic sidebar card that suggests scheduling actions based on calendar gaps.
@@ -52,6 +73,7 @@ All notable changes to the KRONOS AI project will be documented in this file.
 - **Vite Environment Types**: Added `src/vite-env.d.ts` for strictly typed environment variables.
 
 ### Fixed
+
 - Corrected import paths for UI components in `CommandCenter.tsx` and `UserFeedbackForm.tsx`.
 - Resolved `React` namespace issues in `skeleton.tsx` and `sonner.tsx`.
 - Fixed property access in `ErrorBoundary.tsx`.
@@ -60,6 +82,7 @@ All notable changes to the KRONOS AI project will be documented in this file.
 ## [1.1.0] - 2026-04-16
 
 ### Added
+
 - **User Feedback System**: Full integration with Supabase (Auth + Postgres + RLS).
 - **Migration Script**: `supabase_migration.sql` for setting up feedback tables and security policies.
 - **Testing Suite**: Configured Vitest and added tests for `UserFeedbackForm` and utilities.
@@ -67,10 +90,12 @@ All notable changes to the KRONOS AI project will be documented in this file.
 ## [1.0.0] - 2026-04-16
 
 ### Added
+
 - **Professional Polish Theme**: Initial visual design implementation with glassmorphism and tactical "God Mode" aesthetic.
 - **Core Layout**: Sidebar, Header, and Calendar Grid structure.
 - **Auth Integration**: Supabase authentication boilerplate.
 - **AI Service**: Initial Gemini API integration for scheduling analysis.
 
 ---
-*Generated by KRONOS AI Build Agent.*
+
+_Generated by KRONOS AI Build Agent._

@@ -1,9 +1,9 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore, doc, getDocFromServer } from "firebase/firestore";
 
 // Load default config (holders)
-import baseConfig from '../firebase-applet-config.json';
+import baseConfig from "../firebase-applet-config.json";
 
 // Define the shape of our config
 interface FirebaseConfig {
@@ -24,13 +24,20 @@ interface FirebaseConfig {
 const resolveConfig = (): FirebaseConfig => {
   return {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY || baseConfig.apiKey,
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || baseConfig.authDomain,
+    authDomain:
+      import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || baseConfig.authDomain,
     projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || baseConfig.projectId,
-    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || baseConfig.storageBucket,
-    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || baseConfig.messagingSenderId,
+    storageBucket:
+      import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || baseConfig.storageBucket,
+    messagingSenderId:
+      import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID ||
+      baseConfig.messagingSenderId,
     appId: import.meta.env.VITE_FIREBASE_APP_ID || baseConfig.appId,
-    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || baseConfig.measurementId,
-    firestoreDatabaseId: import.meta.env.VITE_FIREBASE_FIRESTORE_DATABASE_ID || baseConfig.firestoreDatabaseId,
+    measurementId:
+      import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || baseConfig.measurementId,
+    firestoreDatabaseId:
+      import.meta.env.VITE_FIREBASE_FIRESTORE_DATABASE_ID ||
+      baseConfig.firestoreDatabaseId,
   };
 };
 
@@ -44,22 +51,27 @@ export const auth = getAuth(app);
 // Simple connection test
 async function testConnection() {
   try {
-    await getDocFromServer(doc(db, 'test', 'connection'));
+    await getDocFromServer(doc(db, "test", "connection"));
   } catch (error) {
-    if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.error("Please check your Firebase configuration. Firestore connection failed.");
+    if (
+      error instanceof Error &&
+      error.message.includes("the client is offline")
+    ) {
+      console.error(
+        "Please check your Firebase configuration. Firestore connection failed.",
+      );
     }
   }
 }
 testConnection();
 
 export enum OperationType {
-  CREATE = 'create',
-  UPDATE = 'update',
-  DELETE = 'delete',
-  LIST = 'list',
-  GET = 'get',
-  WRITE = 'write',
+  CREATE = "create",
+  UPDATE = "update",
+  DELETE = "delete",
+  LIST = "list",
+  GET = "get",
+  WRITE = "write",
 }
 
 export interface FirestoreErrorInfo {
@@ -78,10 +90,14 @@ export interface FirestoreErrorInfo {
       email: string | null;
       photoUrl: string | null;
     }[];
-  }
+  };
 }
 
-export function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+export function handleFirestoreError(
+  error: unknown,
+  operationType: OperationType,
+  path: string | null,
+) {
   const errInfo: FirestoreErrorInfo = {
     error: error instanceof Error ? error.message : String(error),
     authInfo: {
@@ -90,16 +106,17 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
       emailVerified: auth.currentUser?.emailVerified,
       isAnonymous: auth.currentUser?.isAnonymous,
       tenantId: auth.currentUser?.tenantId,
-      providerInfo: auth.currentUser?.providerData.map(provider => ({
-        providerId: provider.providerId,
-        displayName: provider.displayName,
-        email: provider.email,
-        photoUrl: provider.photoURL
-      })) || []
+      providerInfo:
+        auth.currentUser?.providerData.map((provider) => ({
+          providerId: provider.providerId,
+          displayName: provider.displayName,
+          email: provider.email,
+          photoUrl: provider.photoURL,
+        })) || [],
     },
     operationType,
-    path
-  }
-  console.error('Firestore Error: ', JSON.stringify(errInfo));
+    path,
+  };
+  console.error("Firestore Error: ", JSON.stringify(errInfo));
   throw new Error(JSON.stringify(errInfo));
 }

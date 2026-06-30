@@ -37,15 +37,30 @@
         "end_time": { "type": "string", "format": "date-time" },
         "persona": { "type": "string", "enum": ["work", "family", "side"] },
         "priority": { "type": "integer" },
-        "type": { "type": "string", "enum": ["meeting", "task", "deep_work", "admin", "travel"] },
+        "type": {
+          "type": "string",
+          "enum": ["meeting", "task", "deep_work", "admin", "travel"]
+        },
         "location": { "type": "string" },
         "energy_score": { "type": "integer" },
-        "status": { "type": "string", "enum": ["confirmed", "proposed", "ghost", "cancelled"] },
+        "status": {
+          "type": "string",
+          "enum": ["confirmed", "proposed", "ghost", "cancelled"]
+        },
         "action_items": { "type": "array", "items": { "type": "string" } },
         "external_id": { "type": "string" },
         "created_at": { "type": "string", "format": "date-time" }
       },
-      "required": ["user_id", "title", "start_time", "end_time", "persona", "priority", "type", "status"]
+      "required": [
+        "user_id",
+        "title",
+        "start_time",
+        "end_time",
+        "persona",
+        "priority",
+        "type",
+        "status"
+      ]
     },
     "Task": {
       "title": "Task",

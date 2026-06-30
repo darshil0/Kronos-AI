@@ -23,6 +23,7 @@ KRONOS AI is a high-performance, AI-driven calendar application designed for aut
 ## 🏁 Getting Started
 
 ### ⚠️ Security Notice
+
 We recently performed a security audit and sanitized sensitive credentials. Please refer to [SECURITY_FIX.md](./SECURITY_FIX.md) for details and mandatory rotation instructions.
 
 ### Prerequisites
@@ -34,6 +35,7 @@ We recently performed a security audit and sanitized sensitive credentials. Plea
 ### Configuration
 
 1. **Environment Variables**: Clone `.env.example` to `.env` and populate the following:
+
    ```env
    VITE_SUPABASE_URL=your_supabase_url
    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
@@ -43,6 +45,7 @@ We recently performed a security audit and sanitized sensitive credentials. Plea
 2. **Database Setup**: Run the provided `supabase_migration.sql` in your Supabase SQL Editor to set up the `feedback` and `profiles` tables.
 
 3. **Install Dependencies**:
+
    ```bash
    npm install
    ```
@@ -55,9 +58,11 @@ We recently performed a security audit and sanitized sensitive credentials. Plea
 ## 🧪 Testing
 
 Run the test suite to ensure tactical integrity:
+
 ```bash
 npm test
 ```
 
 ---
-*Built with operational excellence for the modern digital operative. Optimized for AI-driven tactical scheduling.*
+
+_Built with operational excellence for the modern digital operative. Optimized for AI-driven tactical scheduling._
