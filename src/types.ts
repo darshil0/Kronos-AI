@@ -1,13 +1,13 @@
-export type Persona = 'work' | 'family' | 'side';
-export type EventType = 'meeting' | 'task' | 'deep_work' | 'admin' | 'travel';
-export type EventStatus = 'confirmed' | 'proposed' | 'ghost' | 'cancelled';
+export type Persona = "work" | "family" | "side";
+export type EventType = "meeting" | "task" | "deep_work" | "admin" | "travel";
+export type EventStatus = "confirmed" | "proposed" | "ghost" | "cancelled";
 
 export interface UserProfile {
   id: string;
   email: string;
   energy_profile: {
     peaks: string[]; // e.g. ["08:00-11:00"]
-    lows: string[];  // e.g. ["14:00-16:00"]
+    lows: string[]; // e.g. ["14:00-16:00"]
   };
   preferences: {
     personas: Persona[];
