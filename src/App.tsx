@@ -3,29 +3,52 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Sidebar } from "./components/Sidebar";
-import { CalendarGrid } from "./components/CalendarGrid";
-import { CommandCenter } from "./components/CommandCenter";
-import { AIInsights } from "./components/AIInsights";
-import { Bell } from "lucide-react";
-import { Button } from "../components/ui/button";
-import { TooltipProvider } from "../components/ui/tooltip";
-import { Toaster } from "../components/ui/sonner";
+import { Bell, UserRound } from "lucide-react";
 import { toast } from "sonner";
 
-import { ErrorBoundary } from "./components/ErrorBoundary";
-import { useAuth } from "./AuthContext";
-import { LoginScreen } from "./components/LoginScreen";
+import { useAuth } from "@/AuthContext";
+import { AIInsights } from "@/components/AIInsights";
+import { CalendarGrid } from "@/components/CalendarGrid";
+import { CommandCenter } from "@/components/CommandCenter";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { LoginScreen } from "@/components/LoginScreen";
+import { Sidebar } from "@/components/Sidebar";
+import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export default function App() {
   const { user, loading } = useAuth();
 
+  const handleNotifications = () => {
+    try {
+      toast.info("All systems operational. No unread alerts.", {
+        id: "notifications-status",
+      });
+    } catch (error) {
+      console.error("Unable to show notifications status:", error);
+    }
+  };
+
+  const handleProfileClick = () => {
+    toast.info(user.email ?? "User profile");
+  };
+
   if (loading) {
     return (
-      <div className="h-screen w-full flex items-center justify-center glass-dark">
+      <div
+        className="glass-dark flex min-h-screen w-full items-center justify-center"
+        role="status"
+        aria-live="polite"
+        aria-label="Synchronizing account data"
+      >
         <div className="flex flex-col items-center gap-4">
-          <div className="h-12 w-12 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" />
-          <p className="text-white/40 font-mono text-sm tracking-widest animate-pulse">
+          <div
+            className="h-12 w-12 animate-spin rounded-full border-4 border-blue-500/20 border-t-blue-500"
+            aria-hidden="true"
+          />
+
+          <p className="animate-pulse font-mono text-sm tracking-widest text-white/40">
             SYNCHRONIZING...
           </p>
         </div>
@@ -43,41 +66,51 @@ export default function App() {
         <div className="flex h-screen w-full overflow-hidden">
           <Sidebar />
 
-          <main className="flex-1 flex flex-col min-w-0 bg-black/10">
-            {/* Header */}
-            <header className="h-16 border-b border-white/10 glass flex items-center justify-between px-6 shrink-0 bg-black/50 backdrop-blur-md">
-              <div className="flex items-center flex-1 max-w-2xl">
+          <main className="flex min-w-0 flex-1 flex-col bg-black/10">
+            <header className="glass flex h-16 shrink-0 items-center justify-between border-b border-white/10 bg-black/50 px-6 backdrop-blur-md">
+              <div className="flex max-w-2xl flex-1 items-center">
                 <CommandCenter />
               </div>
 
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
                 <Button
+                  type="button"
                   variant="ghost"
                   size="icon"
-                  aria-label="Notifications"
-                  onClick={() =>
-                    toast.info("Notifications: All systems operational. No unread alerts.")
-                  }
+                  aria-label="Show notification status"
+                  onClick={handleNotifications}
                   className="text-white hover:bg-white/10"
                 >
-                  <Bell className="h-5 w-5" />
+                  <Bell className="h-5 w-5" aria-hidden="true" />
                 </Button>
-                <div
-                  aria-label="User profile"
-                  title={user.email || "User Profile"}
-                  className="h-8 w-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 border border-white/20 cursor-pointer hover:scale-105 transition-transform"
-                />
+
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  aria-label={`Open profile for ${user.email ?? "current user"}`}
+                  title={user.email ?? "User profile"}
+                  onClick={handleProfileClick}
+                  className="rounded-full p-0 hover:bg-transparent focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  <span
+                    className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-gradient-to-tr from-blue-500 to-purple-600 transition-transform hover:scale-105"
+                    aria-hidden="true"
+                  >
+                    <UserRound className="h-4 w-4 text-white" />
+                  </span>
+                </Button>
               </div>
             </header>
 
-            {/* Dash Content */}
-            <div className="flex-1 flex overflow-hidden">
+            <div className="flex min-h-0 flex-1 overflow-hidden">
               <CalendarGrid />
               <AIInsights />
             </div>
           </main>
         </div>
-        <Toaster />
+
+        <Toaster richColors closeButton />
       </TooltipProvider>
     </ErrorBoundary>
   );
