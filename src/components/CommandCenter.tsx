@@ -30,6 +30,18 @@ export function CommandCenter() {
 
     try {
       const parsed = await parseSchedulingPrompt(prompt);
+      if (
+        !parsed.title ||
+        !parsed.start_time ||
+        isNaN(new Date(parsed.start_time).getTime())
+      ) {
+        toast.error(
+          "Unable to parse request. Please include an event title and time (e.g., 'Sync with Team tomorrow at 10am').",
+          { id },
+        );
+        return;
+      }
+
       const startTime = new Date(parsed.start_time);
       const endTime = addMinutes(startTime, parsed.duration_minutes || 60);
 
@@ -101,7 +113,7 @@ export function CommandCenter() {
     } catch (error) {
       console.error("Command center error:", error);
       toast.error(
-        "Mission Failed: AI was unable to parse the tactical request.",
+        "Mission Failed: Unable to parse scheduling request. Please check your prompt format or try again.",
         { id },
       );
     } finally {
@@ -123,6 +135,7 @@ export function CommandCenter() {
         onChange={(e) => setPrompt(e.target.value)}
         disabled={isProcessing}
         placeholder="Autonomous Command: 'Sync with Team tomorrow at 10am'..."
+        aria-label="Autonomous scheduling command input"
         className="pl-12 pr-10 h-11 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-blue-500/50 rounded-xl font-mono text-sm tracking-tight transition-all"
       />
       <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">

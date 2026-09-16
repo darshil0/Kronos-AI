@@ -44,13 +44,36 @@ export function EventDialog({ event, isOpen, onClose }: EventDialogProps) {
   if (!event) return null;
 
   const handleSave = async () => {
+    if (!formData.title?.trim()) {
+      toast.error("Event title is required.");
+      return;
+    }
+
+    if (!formData.start_time || !formData.end_time) {
+      toast.error("Valid start and end times are required.");
+      return;
+    }
+
+    const start = new Date(formData.start_time);
+    const end = new Date(formData.end_time);
+
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      toast.error("Please enter valid start and end dates.");
+      return;
+    }
+
+    if (end <= start) {
+      toast.error("End time must be after start time.");
+      return;
+    }
+
     setIsSaving(true);
     const toastId = toast.loading("Updating tactical parameters...");
     try {
       await calendarService.updateEvent(event.id, {
         ...formData,
-        start_time: new Date(formData.start_time!).toISOString(),
-        end_time: new Date(formData.end_time!).toISOString(),
+        start_time: start.toISOString(),
+        end_time: end.toISOString(),
       });
       toast.success("Mission parameters updated.", { id: toastId });
       onClose();
@@ -143,10 +166,11 @@ export function EventDialog({ event, isOpen, onClose }: EventDialogProps) {
 
           <div className="grid grid-cols-3 gap-4">
             <div className="space-y-2">
-              <Label className="text-xs uppercase tracking-widest text-white/60">
+              <Label htmlFor="persona" className="text-xs uppercase tracking-widest text-white/60">
                 Persona
               </Label>
               <select
+                id="persona"
                 value={formData.persona}
                 onChange={(e) =>
                   setFormData({
@@ -162,10 +186,11 @@ export function EventDialog({ event, isOpen, onClose }: EventDialogProps) {
               </select>
             </div>
             <div className="space-y-2">
-              <Label className="text-xs uppercase tracking-widest text-white/60">
+              <Label htmlFor="type" className="text-xs uppercase tracking-widest text-white/60">
                 Type
               </Label>
               <select
+                id="type"
                 value={formData.type}
                 onChange={(e) =>
                   setFormData({
@@ -183,10 +208,11 @@ export function EventDialog({ event, isOpen, onClose }: EventDialogProps) {
               </select>
             </div>
             <div className="space-y-2">
-              <Label className="text-xs uppercase tracking-widest text-white/60">
+              <Label htmlFor="status" className="text-xs uppercase tracking-widest text-white/60">
                 Status
               </Label>
               <select
+                id="status"
                 value={formData.status}
                 onChange={(e) =>
                   setFormData({

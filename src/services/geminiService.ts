@@ -1,7 +1,37 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { CalendarEvent } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
+const getApiKey = (): string => {
+  if (typeof process !== "undefined" && process.env?.GEMINI_API_KEY) {
+    return process.env.GEMINI_API_KEY;
+  }
+  if (typeof import.meta !== "undefined" && import.meta.env?.VITE_GEMINI_API_KEY) {
+    return import.meta.env.VITE_GEMINI_API_KEY;
+  }
+  return "";
+};
+
+const ai = new GoogleGenAI({ apiKey: getApiKey() });
+
+/**
+ * Safely parses JSON strings returned by AI model outputs,
+ * stripping markdown code fence blocks if present.
+ */
+export function parseAIJsonResponse<T = Record<string, unknown>>(
+  text: string | null | undefined,
+): T {
+  if (!text) return {} as T;
+  const cleaned = text
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```$/, "")
+    .trim();
+  try {
+    return JSON.parse(cleaned) as T;
+  } catch (error) {
+    console.error("Failed to parse AI JSON response:", error, "Raw text:", text);
+    return {} as T;
+  }
+}
 
 export async function parseSchedulingPrompt(
   prompt: string,
@@ -12,7 +42,7 @@ export async function parseSchedulingPrompt(
     contents: `Current Time: ${currentTime}\nPrompt: ${prompt}`,
     config: {
       systemInstruction:
-        "You are the Ultimate AI Calendar assistant. Parse natural language scheduling requests. Return a JSON object with title, start_time, duration_minutes, priority (1-10), type (meeting, task, deep_work, admin, travel), and persona (work, family, side). Use ISO 8601 for dates.",
+        "You are the Ultimate AI Calendar assistant. Parse natural language scheduling requests relative to Current Time. Return a JSON object with title, start_time (ISO 8601 string relative to Current Time), duration_minutes (number), priority (1-10, default 5), type ('meeting', 'task', 'deep_work', 'admin', 'travel'), and persona ('work', 'family', 'side'). If details such as date or time are unspecified or ambiguous, infer reasonable defaults based on Current Time and state assumptions clearly in action_items.",
       responseMimeType: "application/json",
       responseSchema: {
         type: Type.OBJECT,
@@ -37,7 +67,7 @@ export async function parseSchedulingPrompt(
     },
   });
 
-  return JSON.parse(response.text || "{}");
+  return parseAIJsonResponse<Record<string, any>>(response.text);
 }
 
 export async function resolveConflicts(
@@ -72,10 +102,10 @@ export async function resolveConflicts(
     contents: prompt,
     config: {
       systemInstruction:
-        "You are a tactical operations scheduler. Analyze overlaps and energy alignment. Prioritize executive function during energy peaks.",
+        "You are a tactical operations scheduler. Analyze schedule overlaps and energy alignment relative to time of day. Prioritize executive function during morning energy peaks (08:00-12:00) and lighter tasks during afternoon dips (13:00-16:00). Output clear JSON matching the requested structure.",
       responseMimeType: "application/json",
     },
   });
 
-  return JSON.parse(response.text || "{}");
+  return parseAIJsonResponse<Record<string, any>>(response.text);
 }
