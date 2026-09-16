@@ -34,12 +34,21 @@ We recently performed a security audit and sanitized sensitive credentials. Plea
 
 ### Configuration
 
-1. **Environment Variables**: Clone `.env.example` to `.env` and populate the following:
+1. **Environment Variables**: Clone `.env.example` to `.env` and populate the environment variables:
 
    ```env
    VITE_SUPABASE_URL=your_supabase_url
    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
    GEMINI_API_KEY=your_gemini_api_key
+   VITE_GEMINI_API_KEY=your_gemini_api_key
+   VITE_FIREBASE_API_KEY=your_firebase_api_key
+   VITE_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
+   VITE_FIREBASE_PROJECT_ID=your_firebase_project_id
+   VITE_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
+   VITE_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
+   VITE_FIREBASE_APP_ID=your_firebase_app_id
+   VITE_FIREBASE_MEASUREMENT_ID=your_firebase_measurement_id
+   VITE_FIREBASE_FIRESTORE_DATABASE_ID=your_firebase_firestore_database_id
    ```
 
 2. **Database Setup**: Run the provided `supabase_migration.sql` in your Supabase SQL Editor to set up the `feedback` and `profiles` tables.
@@ -55,13 +64,32 @@ We recently performed a security audit and sanitized sensitive credentials. Plea
    npm run dev
    ```
 
-## 🧪 Testing
+## 🧪 Quality & Testing
 
-Run the test suite to ensure tactical integrity:
+Execute verification scripts to ensure tactical integrity and type safety:
 
-```bash
-npm test
-```
+- **Run Unit & Integration Tests**:
+  ```bash
+  npm test
+  ```
+
+- **Type Check & Lint**:
+  ```bash
+  npm run lint
+  ```
+
+- **Production Build**:
+  ```bash
+  npm run build
+  ```
+
+## 🤖 AI & Autonomous Engine
+
+KRONOS AI utilizes Google Gemini (`gemini-3.1-pro-preview`) to process natural language scheduling requests and evaluate schedule overlaps.
+
+- **Natural Language Parsing**: Directives in the Command Center are parsed relative to the current timestamp into structured calendar objects (title, ISO 8601 start time, duration, priority, persona, type).
+- **Tactical Conflict Resolution**: Overlapping events trigger energy-alignment analysis (morning peak vs. afternoon dip) to suggest optimal rescheduling alternatives or proposed status changes.
+- **Robust Output Handling**: Structured JSON outputs automatically handle model formatting fences and missing fields with graceful user-facing error guidance.
 
 ---
 

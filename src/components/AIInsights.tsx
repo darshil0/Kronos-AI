@@ -1,5 +1,6 @@
 import { Sparkles, MessageSquare } from "lucide-react";
 import { Button } from "../../components/ui/button";
+import { toast } from "sonner";
 
 export function AIInsights() {
   return (
@@ -28,6 +29,9 @@ export function AIInsights() {
             </p>
             <Button
               variant="link"
+              onClick={() =>
+                toast.info("Auto-Schedule: Use the Command Center header bar to confirm 'Sprint Review at 2pm'.")
+              }
               className="p-0 h-auto text-[10px] text-blue-400 mt-2 hover:text-blue-300"
             >
               Auto-Schedule →
@@ -37,7 +41,12 @@ export function AIInsights() {
       </div>
 
       <div className="mt-auto p-6 border-t border-white/10">
-        <Button className="w-full gap-2 bg-blue-600 hover:bg-blue-500 text-white">
+        <Button
+          onClick={() =>
+            toast.info("Chat Assistant: Input directives into the Autonomous Command Center bar.")
+          }
+          className="w-full gap-2 bg-blue-600 hover:bg-blue-500 text-white"
+        >
           <MessageSquare className="h-4 w-4" />
           Chat Assistant
         </Button>

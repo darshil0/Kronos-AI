@@ -79,8 +79,20 @@ export function CalendarGrid() {
             >
               Family
             </Badge>
+            <Badge
+              variant="outline"
+              className="text-amber-400 border-amber-400/30 bg-amber-400/10"
+            >
+              Side Project
+            </Badge>
           </div>
         </div>
+
+        {events.length === 0 && (
+          <div className="p-3 bg-white/5 border-b border-white/10 text-center text-xs text-white/50 font-mono">
+            No events scheduled for this month. Use the Autonomous Command Center above to schedule a mission.
+          </div>
+        )}
 
         <div className="grid grid-cols-7 border-b border-white/10 bg-white/2">
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (

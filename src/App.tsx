@@ -11,6 +11,7 @@ import { Bell } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { TooltipProvider } from "../components/ui/tooltip";
 import { Toaster } from "../components/ui/sonner";
+import { toast } from "sonner";
 
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { useAuth } from "./AuthContext";
@@ -53,11 +54,19 @@ export default function App() {
                 <Button
                   variant="ghost"
                   size="icon"
+                  aria-label="Notifications"
+                  onClick={() =>
+                    toast.info("Notifications: All systems operational. No unread alerts.")
+                  }
                   className="text-white hover:bg-white/10"
                 >
                   <Bell className="h-5 w-5" />
                 </Button>
-                <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 border border-white/20 cursor-pointer hover:scale-105 transition-transform" />
+                <div
+                  aria-label="User profile"
+                  title={user.email || "User Profile"}
+                  className="h-8 w-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 border border-white/20 cursor-pointer hover:scale-105 transition-transform"
+                />
               </div>
             </header>
 

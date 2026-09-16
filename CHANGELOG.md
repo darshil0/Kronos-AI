@@ -2,6 +2,21 @@
 
 All notable changes to the KRONOS AI project will be documented in this file.
 
+## [1.6.0] - 2026-07-01
+
+### Added
+
+- **AI Model Parsing Resilience**: Added `parseAIJsonResponse` helper to sanitize markdown code fence blocks from AI outputs and fall back safely on malformed JSON.
+- **Unit Testing**: Added test suite `src/__tests__/geminiService.test.ts` for AI prompt handling and `src/__tests__/CommandCenter.test.tsx` for Command Center UI validation and accessible labels.
+
+### Fixed
+
+- **Command Center Validation**: Added title and timestamp parsing checks in `CommandCenter.tsx` with specific user-facing error toast messages when AI cannot infer valid scheduling attributes.
+- **Event Intel Dialog Validation**: Added date/title validation to `EventDialog.tsx` preventing invalid dates or start/end sequence errors.
+- **UI & Accessibility Polish**: Added missing `Side Project` badge to `CalendarGrid` legend, added empty state guidance when no events exist in current month, added `aria-label` attributes to inputs and action buttons, and provided toast feedback for Shield Mode, Settings, and Notifications.
+- **System Error Copy**: Improved `ErrorBoundary.tsx` error presentation with actionable user recovery guidance.
+- **Documentation**: Synchronized `README.md` with all required environment variables and quality verification commands.
+
 ## [1.5.0] - 2026-06-30
 
 ### Added

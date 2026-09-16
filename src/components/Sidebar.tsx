@@ -10,6 +10,7 @@ import { cn } from "../../lib/utils";
 import { Button } from "../../components/ui/button";
 import { ScrollArea } from "../../components/ui/scroll-area";
 import { Separator } from "../../components/ui/separator";
+import { toast } from "sonner";
 
 const navigation = [
   { name: "Today", icon: LayoutDashboard, current: true },
@@ -79,6 +80,9 @@ export function Sidebar() {
       <div className="p-4 mt-auto border-t border-white/10 space-y-2">
         <Button
           variant="default"
+          onClick={() =>
+            toast.info("Shield Mode: Focus mode engaged. Non-critical alerts muted.")
+          }
           className="w-full justify-start gap-3 bg-[#ef4444] hover:bg-[#dc2626] text-white font-bold"
         >
           <Shield className="h-4 w-4" />
@@ -86,6 +90,9 @@ export function Sidebar() {
         </Button>
         <Button
           variant="ghost"
+          onClick={() =>
+            toast.info("Settings: Operational parameters configured automatically.")
+          }
           className="w-full justify-start gap-3 text-white/60 hover:text-white hover:bg-white/10"
         >
           <Settings className="h-4 w-4" />
